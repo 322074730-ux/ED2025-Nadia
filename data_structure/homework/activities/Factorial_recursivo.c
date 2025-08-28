@@ -3,12 +3,12 @@
 #include <string.h>
 
 int factRecursion(int n) {
-    if (n < 0)
-        return 0; // No definido para negativos
-    else if (n == 0 || n == 1)
+    if (n<0)
+        return 0; 
+    else if (n==0 || n==1)
         return 1;
     else
-        return n * factRecursion(n - 1);
+        return n * factRecursion(n-1);
 }
 
 int main(int argc, char *argv[]) {
@@ -17,8 +17,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int num = atoi(argv[1]);   // convertir argumento a entero
-    int resultado = factRecursion(num); // calcular factorial
+    int num=atoi(argv[1]);   
+    int resultado=factRecursion(num); 
     
     printf("El factorial de %d es: %d\n", num, resultado);
 
