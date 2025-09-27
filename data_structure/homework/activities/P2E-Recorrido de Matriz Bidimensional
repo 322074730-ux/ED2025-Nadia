@@ -1,0 +1,92 @@
+#include <stdio.h>
+
+// Llenar la matriz con valores
+void llenarMatriz(int array[10][10], int n, int m) {
+    int i, j;
+    printf("\nLlenando la matriz %dx%d:\n", n, m);
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < m; j++) {
+            printf("Ingrese el valor para la posición [%d][%d]: ", i, j);
+            scanf("%d", &array[i][j]);
+        }
+    }
+}
+
+// Muestra matriz
+void mostrarMatriz(int array[10][10], int n, int m) {
+    int i, j;
+    printf("\nMatriz %dx%d:\n", n, m);
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < m; j++) {
+            printf("%3d ", array[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+// 1. Recorrido por filas
+void recorridoPorFilas(int array[10][10], int n, int m) {
+    int i, j;
+    printf("\n1. Recorrido por filas (00, 01, 02...):\n");
+    for (i=0; i<n; i++) {
+        for (j=0; j<m; j++) {
+            printf("%d ", array[i][j]);
+        }
+    }
+    printf("\n");
+}
+
+// 2. Recorrido por columnas en reversa
+void recorridoPorColumnasReversa(int array[10][10], int n, int m) {
+    int i, j;
+    printf("\n2. Recorrido por columnas reversa (nm, n-1m, n-2m...):\n");
+    
+    for (j=m-1; j>=0; j--) {
+        for (i=n-1; i>= 0; i--) {
+            printf("%d ", array[i][j]);
+        }
+    }
+    printf("\n");
+}
+
+// 3. Recorrido en diagonal
+void recorridoDiagonal(int array[10][10], int n, int m) {
+    int i;
+    printf("\n3. Recorrido en diagonal:\n");
+    
+    if (n==m){
+        for (i=0; i<n; i++) {
+            printf("%d ", array[i][i]);
+        }
+    }else if (n<m){
+        for (i=0; i<n; i++) {
+            printf("%d ", array[i][i]);
+        }
+    }else{
+        for (i=0; i<m; i++) {
+            printf("%d ", array[i][i]);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int array[10][10];
+    int n, m;
+    int i, j;
+    
+    printf("=== PROGRAMA: RECORRIDO DE MATRIZ ===\n");
+    printf("\nIngrese el número de filas (n, max. 10): ");
+    scanf("%d", &n);
+    printf("Ingrese el número de columnas (m, máx. 10): ");
+    scanf("%d", &m);
+    
+    llenarMatriz(array, n, m);
+    mostrarMatriz(array, n, m);
+    
+    recorridoPorFilas(array, n, m);
+    recorridoPorColumnasReversa(array, n, m);
+    recorridoDiagonal(array, n, m);
+    
+    return 0;
+}
