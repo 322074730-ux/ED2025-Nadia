@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    if (argc != 2){
+        printf("Uso: %s Cadena\n", argv[0]);
+        printf("Ejemplo: %s COMPUTACION\n", argv[0]);
+        return -1;
+    }
+    char *cadena=argv[1];
+    int longitud=strlen(cadena);
+    
+    char **matriz=(char **)malloc((longitud +1) * sizeof(char *));
+    if (matriz==NULL) {
+        return -1;
+    }
+    printf("./ %s %s\n", argv[0], cadena);
+    
+    for (int i=0; i<longitud; i++) {
+        char letra=cadena[i];
+        
+        if (letra<'A' || letra> 'Z') {
+            matriz[i]=NULL;
+            printf("| NULL |\n");
+            continue;
+        }
+        int repeticiones=letra-'A' +1;
+        
+        matriz[i]=(char *)malloc((repeticiones+ 1) * sizeof(char));
+        if (matriz[i]==NULL) {
+            for (int j=0; j<i; j++) {
+                if (matriz[j] != NULL) {
+                    free(matriz[j]);
+                }
+            }
+            free(matriz);
+            return -1;
+        }
+        for (int j=0; j< repeticiones; j++) {
+            matriz[i][j]=letra;
+        }
+        matriz[i][repeticiones] = '\0';
+        
+        printf("| ");
+        for (int j=0; j<repeticiones; j++) {
+            printf("%c ", letra);
+        }
+        printf("|\n");
+    }
+    matriz[longitud]=NULL;
+    
+    printf("\n");
+    for (int i=0; i<longitud; i++) {
+        char letra=cadena[i];
+        
+        if (letra< 'A' || letra>'Z') {
+            printf("| NULL |\n");
+        } else {
+            int repeticiones=letra-'A' +1;
+            printf("| ");
+            for (int j=0; j<repeticiones; j++) {
+                printf("%c ", letra);
+            }
+            printf("|\n");
+        }
+    }
+    printf("NULL\n");
+    
+    for (int i=0; i<longitud; i++) {
+        if (matriz[i] != NULL) {
+            free(matriz[i]);
+        }
+    }
+    free(matriz);
+    return 0;
+}
