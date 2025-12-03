@@ -1,28 +1,24 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
-// Prototipos de funciones esenciales
-bool esOperador(char c);
-bool esOperando(char c);
-int precedencia(char operador);
-bool esParentesis(char c);
-bool esParentesisApertura(char c);
-bool esParentesisCierre(char c);
-bool caracteresValidos(const char* expresion);
-int contarTokens(const char* expresion);
-void trimEspacios(char* str);
-bool expresionBalanceada(const char* expresion);
-bool esNumero(const char* str);
-double convertirADouble(const char* str);
+// Prototipos de funciones
 void limpiarBuffer();
-int leerEntero(const char* mensaje);
-double leerDouble(const char* mensaje);
-void leerCadena(char* buffer, int tamaño, const char* mensaje);
-void mostrarError(const char* mensaje);
-void mostrarExito(const char* mensaje);
-void pausarPantalla();
+int esNumero(char c);
+int esCaracterOperador(char c);
+int precedencia(char operador);
+int esOperadorValido(char c);
+int esParentesis(char c);
+void leerCadena(char* buffer, int tamano, const char* mensaje);
+void formatearExpresion(char* expresion);
+int validarExpresion(const char* expresion);
+int contarOperandos(const char* expresion);
+int contarOperadores(const char* expresion);
+void limpiarPantalla();
+void pausar();
 
-#endif
+#endif // UTILS_H
