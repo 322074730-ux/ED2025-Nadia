@@ -1,19 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "include/utils.h"
-#include "include/stack.h"
-#include "include/dlist.h"
-#include "include/parser.h"
+#include "../Include/stack.h"
+#include "../Include/dlist.h"
+#include "../Include/parser.h"
+#include "../Include/utils.h"
+#include "../Include/file_manager.h"
 
 // Declaraciones de funciones (SOLO DECLARACIONES)
 void mostrarMenu();
 void procesarOpcion(int opcion);
-void mostrarEstadisticas();  // SOLO DECLARACIÓN
-void limpianHistorical();    // SOLO DECLARACIÓN
 void mostrarCreditos();
 
-// Funciones de conversión
+// Funciones de conversión (declaraciones)
 char* convertirInfijaAPostfija(const char* infija);
 char* convertirInfijaAPrefija(const char* infija);
 char* convertirPostfijaAInfija(const char* postfija);
@@ -21,14 +20,14 @@ char* convertirPostfijaAPrefija(const char* postfija);
 char* convertirPrefijaAInfija(const char* prefija);
 char* convertirPrefijaAPostfija(const char* prefija);
 
-// Variables globales (si las hay)
-DList* historial = NULL;
+// Variables globales
+ListaDoble* historial = NULL;
 
 int main() {
     int opcion;
     
     // Inicializaciones
-    historial = crearDList();
+    historial = crearListaDoble();
     
     do {
         mostrarMenu();
@@ -39,9 +38,9 @@ int main() {
         if (opcion >= 1 && opcion <= 8) {
             procesarOpcion(opcion);
         } else if (opcion == 9) {
-            mostrarEstadisticas();  // LLAMADA A FUNCIÓN EXTERNA
+            mostrarEstadisticas();
         } else if (opcion == 10) {
-            limpianHistorical();    // LLAMADA A FUNCIÓN EXTERNA
+            limpiarHistorial();
         } else if (opcion == 11) {
             mostrarCreditos();
         } else if (opcion != 0) {
@@ -56,7 +55,7 @@ int main() {
     
     // Liberar memoria
     if (historial != NULL) {
-        // Liberar lista
+        destruirListaDoble(historial);
     }
     
     printf("Gracias por usar la calculadora. ¡Hasta pronto!\n");
@@ -92,16 +91,61 @@ void procesarOpcion(int opcion) {
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirInfijaAPostfija(expresion);
             printf("Resultado postfija: %s\n", resultado);
-            free(resultado);
+            if (resultado) free(resultado);
             break;
         case 2:
             printf("Ingrese expresion infija: ");
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirInfijaAPrefija(expresion);
             printf("Resultado prefija: %s\n", resultado);
-            free(resultado);
+            if (resultado) free(resultado);
             break;
-        // ... otros casos ...
+        case 3:
+            printf("Ingrese expresion postfija: ");
+            leerCadena(expresion, sizeof(expresion), NULL);
+            resultado = convertirPostfijaAInfija(expresion);
+            printf("Resultado infija: %s\n", resultado);
+            if (resultado) free(resultado);
+            break;
+        case 4:
+            printf("Ingrese expresion postfija: ");
+            leerCadena(expresion, sizeof(expresion), NULL);
+            resultado = convertirPostfijaAPrefija(expresion);
+            printf("Resultado prefija: %s\n", resultado);
+            if (resultado) free(resultado);
+            break;
+        case 5:
+            printf("Ingrese expresion prefija: ");
+            leerCadena(expresion, sizeof(expresion), NULL);
+            resultado = convertirPrefijaAInfija(expresion);
+            printf("Resultado infija: %s\n", resultado);
+            if (resultado) free(resultado);
+            break;
+        case 6:
+            printf("Ingrese expresion prefija: ");
+            leerCadena(expresion, sizeof(expresion), NULL);
+            resultado = convertirPrefijaAPostfija(expresion);
+            printf("Resultado postfija: %s\n", resultado);
+            if (resultado) free(resultado);
+            break;
+        case 7:
+            printf("Funcionalidad de evaluacion no implementada aun.\n");
+            break;
+        case 8:
+            leerHistorial();
+            break;
+        case 9:
+            mostrarEstadisticas();
+            break;
+        case 10:
+            limpiarHistorial();
+            break;
+        case 11:
+            mostrarCreditos();
+            break;
+        default:
+            printf("Opcion no implementada.\n");
+            break;
     }
 }
 
@@ -114,4 +158,3 @@ void mostrarCreditos() {
     printf("Version: 1.0\n");
     printf("=========================================\n");
 }
-
