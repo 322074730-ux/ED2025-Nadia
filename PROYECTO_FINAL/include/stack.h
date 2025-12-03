@@ -2,6 +2,7 @@
 #define STACK_H
 
 #include <stdbool.h>
+#include <stdlib.h>  // Agregado para malloc/free
 
 // Nodo para pila de caracteres
 typedef struct CharNode {
