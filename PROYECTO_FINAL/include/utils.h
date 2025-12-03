@@ -20,7 +20,7 @@ double convertirADouble(const char* str);
 void limpiarBuffer();
 int leerEntero(const char* mensaje);
 double leerDouble(const char* mensaje);
-void leerCadena(char* buffer, int tamaño, const char* mensaje);
+void leerCadena(char* buffer, int tamano, const char* mensaje);
 void mostrarError(const char* mensaje);
 void mostrarExito(const char* mensaje);
 void pausarPantalla();
