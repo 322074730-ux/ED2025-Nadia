@@ -1,11 +1,12 @@
-#include "conversion_prefix_postfix.h"
-#include "conversion_prefix_infix.h"
-#include "conversion_infix_postfix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../Include/utils.h"
 
-// Convertir prefija a postfija
+// Declaraciones de funciones externas
+char* convertirPrefijaAInfija(const char* prefija);
+char* convertirInfijaAPostfija(const char* infija);
+
 char* convertirPrefijaAPostfija(const char* prefija) {
     if (!prefija || strlen(prefija) == 0) {
         return strdup("");
@@ -13,6 +14,11 @@ char* convertirPrefijaAPostfija(const char* prefija) {
     
     // Paso 1: Convertir prefija a infija
     char* infija = convertirPrefijaAInfija(prefija);
+    if (!infija) {
+        return strdup("ERROR: Conversion prefija a infija fallida");
+    }
+    
+    // Verificar si hay error
     if (strstr(infija, "ERROR")) {
         char* resultado = strdup(infija);
         free(infija);
