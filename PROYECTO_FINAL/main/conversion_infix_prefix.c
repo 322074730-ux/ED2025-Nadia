@@ -1,13 +1,10 @@
-#include "conversion_infix_prefix.h"
-#include "conversion_infix_postfix.h"
-#include "stack.h"
-#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "../Include/utils.h"
 
-// Invertir cadena
+// Función auxiliar
 static void invertirCadena(char* str) {
     if (!str) return;
     
@@ -19,7 +16,7 @@ static void invertirCadena(char* str) {
     }
 }
 
-// Intercambiar paréntesis
+// Función auxiliar
 static void intercambiarParentesis(char* str) {
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(') str[i] = ')';
@@ -27,7 +24,9 @@ static void intercambiarParentesis(char* str) {
     }
 }
 
-// Convertir infija a prefija
+// Declaración de función externa
+char* convertirInfijaAPostfija(const char* infija);
+
 char* convertirInfijaAPrefija(const char* infija) {
     if (!infija || strlen(infija) == 0) {
         return strdup("");
@@ -35,6 +34,8 @@ char* convertirInfijaAPrefija(const char* infija) {
     
     // Paso 1: Invertir la expresión
     char* invertida = strdup(infija);
+    if (!invertida) return strdup("ERROR: Memoria insuficiente");
+    
     invertirCadena(invertida);
     
     // Paso 2: Intercambiar paréntesis
@@ -43,6 +44,10 @@ char* convertirInfijaAPrefija(const char* infija) {
     // Paso 3: Convertir a postfija
     char* postfija = convertirInfijaAPostfija(invertida);
     free(invertida);
+    
+    if (!postfija) {
+        return strdup("ERROR: Conversion fallida");
+    }
     
     // Paso 4: Invertir el resultado
     invertirCadena(postfija);
