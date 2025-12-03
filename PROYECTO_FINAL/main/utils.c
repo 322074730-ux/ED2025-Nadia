@@ -94,7 +94,6 @@ void trimEspacios(char* str){
     while (str[i]==' '){
         i++;
     }
-    
     // Mover caracteres
     while (str[i] != '\0') {
         if (str[i] != ' ' || (str[i] == ' ' && str[i+1] != ' ' && str[i+1] != '\0')){
@@ -104,7 +103,6 @@ void trimEspacios(char* str){
         i++;
     }
     str[j] = '\0';
-    
     // Eliminar espacio final si existe
     if (j>0 && str[j-1] == ' '){
         str[j-1] = '\0';
@@ -133,13 +131,11 @@ bool esNumero(const char* str){
     if (str == NULL || *str == '\0'){
         return false;
     }   
-    
     int puntoDecimal=0;
     for (int i=0; str[i] != '\0'; i++){
         if (i==0 && str[i] == '-') {
             continue;
         }
-        
         if (str[i] == '.') {
             puntoDecimal++;
             if (puntoDecimal>1) {
@@ -181,11 +177,9 @@ double leerDouble(const char* mensaje) {
     return valor;
 }
 
-// Leer una cadena
-void leerCadena(char* buffer, int tamano, const char* mensaje) {
+void leerCadena(char* buffer, int tamaño, const char* mensaje) {
     printf("%s", mensaje);
-    fgets(buffer, tamano, stdin);
-    
+    fgets(buffer, tamaño, stdin);
     // Eliminar salto de línea
     size_t len = strlen(buffer);
     if (len>0 && buffer[len-1] == '\n') {
@@ -193,17 +187,14 @@ void leerCadena(char* buffer, int tamano, const char* mensaje) {
     }
 }
 
-// Mostrar mensaje de error
 void mostrarError(const char* mensaje) {
     printf("\n ERROR: %s\n", mensaje);
 }
 
-// Mostrar mensaje de éxito
 void mostrarExito(const char* mensaje) {
     printf("\n %s\n", mensaje);
 }
 
-// Pausar pantalla
 void pausarPantalla() {
     printf("\nPresiona Enter para continuar...");
     limpiarBuffer();
