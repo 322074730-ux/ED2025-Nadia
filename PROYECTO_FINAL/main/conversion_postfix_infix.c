@@ -26,7 +26,7 @@ char* convertirPostfijaAInfija(const char* postfija) {
             stringStackPush(pila, token);
         }
         // Si es operador
-        else if (esOperador(postfija[i])) {
+        else if (esCaracterOperador(postfija[i])) {
             if (stringStackSize(pila) < 2) {
                 destroyStringStack(pila);
                 return strdup("ERROR: Expresión postfija inválida");
@@ -36,7 +36,8 @@ char* convertirPostfijaAInfija(const char* postfija) {
             char* operando1 = stringStackPop(pila);
             
             // Crear expresión infija con paréntesis
-            char* expresion = (char*)malloc(strlen(operando1) + strlen(operando2) + 4);
+            int len = strlen(operando1) + strlen(operando2) + 5;
+            char* expresion = (char*)malloc(len);
             if (!expresion) {
                 free(operando1);
                 free(operando2);
@@ -44,7 +45,7 @@ char* convertirPostfijaAInfija(const char* postfija) {
                 return strdup("ERROR: Memoria insuficiente");
             }
             
-            sprintf(expresion, "(%s %c %s)", operando1, postfija[i], operando2);
+            snprintf(expresion, len, "(%s %c %s)", operando1, postfija[i], operando2);
             stringStackPush(pila, expresion);
             
             free(operando1);
