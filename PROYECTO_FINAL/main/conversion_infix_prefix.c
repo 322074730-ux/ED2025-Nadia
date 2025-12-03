@@ -8,7 +8,7 @@
 #include <ctype.h>
 
 // Invertir cadena
-void invertirCadena(char* str) {
+static void invertirCadena(char* str) {
     if (!str) return;
     
     int longitud = strlen(str);
@@ -20,7 +20,7 @@ void invertirCadena(char* str) {
 }
 
 // Intercambiar paréntesis
-void intercambiarParentesis(char* str) {
+static void intercambiarParentesis(char* str) {
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(') str[i] = ')';
         else if (str[i] == ')') str[i] = '(';
