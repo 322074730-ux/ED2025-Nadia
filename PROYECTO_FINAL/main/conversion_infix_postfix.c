@@ -1,11 +1,10 @@
-#include "conversion_infix_postfix.h"
-#include "stack.h"
-#include "parser.h"
-#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "../Include/stack.h"
+#include "../Include/parser.h"
+#include "../Include/utils.h"
 
 // Verificar precedencia de operadores
 int obtenerPrecedencia(char operador) {
@@ -26,7 +25,14 @@ char* convertirInfijaAPostfija(const char* infija) {
     }
     
     CharStack* pila = createCharStack();
+    if (!pila) return strdup("ERROR: No se pudo crear la pila");
+    
     char* resultado = (char*)malloc(strlen(infija) * 3 + 1);
+    if (!resultado) {
+        destroyCharStack(pila);
+        return strdup("ERROR: Memoria insuficiente");
+    }
+    
     int indice = 0;
     
     for (int i = 0; infija[i] != '\0'; i++) {
@@ -77,75 +83,6 @@ char* convertirInfijaAPostfija(const char* infija) {
     } else {
         resultado[indice] = '\0';
     }
-    
-    destroyCharStack(pila);
-    return resultado;
-}
-
-// Versión con paso a paso
-char* convertirInfijaAPostfijaConPaso(const char* infija) {
-    char* resultado = convertirInfijaAPostfija(infija);
-    
-    printf("\n═══════════════════════════════════════\n");
-    printf(" CONVERSIÓN INFIJA → POSTFIJA (PASO A PASO)\n");
-    printf("═══════════════════════════════════════\n");
-    printf("Expresión infija: %s\n", infija);
-    
-    // Simular paso a paso
-    CharStack* pila = createCharStack();
-    printf("\nProceso:\n");
-    printf("Entrada │ Pila       │ Salida\n");
-    printf("────────┼────────────┼────────\n");
-    
-    char salida[256] = "";
-    int salidaIdx = 0;
-    
-    for (int i = 0; infija[i] != '\0'; i++) {
-        char actual = infija[i];
-        if (actual == ' ') continue;
-        
-        printf("%-7c │ ", actual);
-        
-        if (isalnum(actual)) {
-            // Operando
-            salida[salidaIdx++] = actual;
-            salida[salidaIdx++] = ' ';
-            salida[salidaIdx] = '\0';
-            printf("%-10s │ %s\n", "", salida);
-        }
-        else if (actual == '(') {
-            charStackPush(pila, actual);
-            printf("%-10s │ %s\n", "(", salida);
-        }
-        else if (actual == ')') {
-            printf("%-10s │ %s\n", "...", salida);
-            while (!charStackIsEmpty(pila) && charStackPeek(pila) != '(') {
-                char operador = charStackPop(pila);
-                salida[salidaIdx++] = operador;
-                salida[salidaIdx++] = ' ';
-                salida[salidaIdx] = '\0';
-                printf("        │ %-10s │ %s\n", "", salida);
-            }
-            if (!charStackIsEmpty(pila) && charStackPeek(pila) == '(') {
-                charStackPop(pila);
-            }
-        }
-        else if (esCaracterOperador(actual)) {
-            charStackPush(pila, actual);
-            printf("%-10s │ %s\n", "", salida);
-        }
-    }
-    
-    while (!charStackIsEmpty(pila)) {
-        printf("        │ %-10s │ %s\n", "", salida);
-        char operador = charStackPop(pila);
-        salida[salidaIdx++] = operador;
-        salida[salidaIdx++] = ' ';
-        salida[salidaIdx] = '\0';
-    }
-    
-    printf("═══════════════════════════════════════\n");
-    printf("Expresión postfija: %s\n", resultado);
     
     destroyCharStack(pila);
     return resultado;
