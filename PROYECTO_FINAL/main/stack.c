@@ -6,7 +6,7 @@
 // Pila de caracteres 
 CharStack* createCharStack() {
     CharStack* s = (CharStack*)malloc(sizeof(CharStack));
-    if (s == NULL){
+    if (s == NULL) {
         return NULL;
     }
     s->top = NULL;
@@ -14,22 +14,22 @@ CharStack* createCharStack() {
     return s;
 }
 
-void destroyCharStack(CharStack* s){
-    if (s==NULL) return;
-    while (!charStackIsEmpty(s)){
+void destroyCharStack(CharStack* s) {
+    if (s == NULL) return;
+    while (!charStackIsEmpty(s)) {
         charStackPop(s);
     }
     free(s);
 }
 
-bool charStackIsEmpty(CharStack* s){
-    return s==NULL || s->top==NULL;
+bool charStackIsEmpty(CharStack* s) {
+    return s == NULL || s->top == NULL;
 }
 
-void charStackPush(CharStack* s, char value){
-    if (s==NULL) return;
+void charStackPush(CharStack* s, char value) {
+    if (s == NULL) return;
     CharNode* newNode = (CharNode*)malloc(sizeof(CharNode));
-    if (newNode==NULL){
+    if (newNode == NULL) {
         printf("Error: Memoria insuficiente\n");
         return;
     }
@@ -39,8 +39,8 @@ void charStackPush(CharStack* s, char value){
     s->size++;
 }
 
-char charStackPop(CharStack* s){
-    if (charStackIsEmpty(s)){
+char charStackPop(CharStack* s) {
+    if (charStackIsEmpty(s)) {
         printf("Error: Pila de caracteres vacía\n");
         return '\0';
     }
@@ -52,19 +52,19 @@ char charStackPop(CharStack* s){
     return value;
 }
 
-char charStackPeek(CharStack* s){
-    if (charStackIsEmpty(s)){
+char charStackPeek(CharStack* s) {
+    if (charStackIsEmpty(s)) {
         return '\0';
     }
     return s->top->data;
 }
 
-int charStackSize(CharStack* s){
+int charStackSize(CharStack* s) {
     return (s == NULL) ? 0 : s->size;
 }
 
-void charStackDisplay(CharStack* s){
-    if (charStackIsEmpty(s)){
+void charStackDisplay(CharStack* s) {
+    if (charStackIsEmpty(s)) {
         printf("Pila de caracteres: vacía\n");
         return;
     }
@@ -78,10 +78,10 @@ void charStackDisplay(CharStack* s){
     printf("]\n");
 }
 
-// Pila de numeros
+// Pila de números versión dinámica
 DoubleStack* createDoubleStack() {
     DoubleStack* s = (DoubleStack*)malloc(sizeof(DoubleStack));
-    if (s == NULL){
+    if (s == NULL) {
         return NULL;
     }
     s->top = NULL;
@@ -89,22 +89,22 @@ DoubleStack* createDoubleStack() {
     return s;
 }
 
-void destroyDoubleStack(DoubleStack* s){
-    if (s==NULL) return;   
-    while (!doubleStackIsEmpty(s)){
+void destroyDoubleStack(DoubleStack* s) {
+    if (s == NULL) return;   
+    while (!doubleStackIsEmpty(s)) {
         doubleStackPop(s);
     }
     free(s);
 }
 
-bool doubleStackIsEmpty(DoubleStack* s){
-    return s==NULL || s->top==NULL;
+bool doubleStackIsEmpty(DoubleStack* s) {
+    return s == NULL || s->top == NULL;
 }
 
-void doubleStackPush(DoubleStack* s, double value){
-    if (s==NULL) return;   
+void doubleStackPush(DoubleStack* s, double value) {
+    if (s == NULL) return;   
     DoubleNode* newNode = (DoubleNode*)malloc(sizeof(DoubleNode));
-    if (newNode==NULL){
+    if (newNode == NULL) {
         printf("Error: Memoria insuficiente\n");
         return;
     }
@@ -114,8 +114,8 @@ void doubleStackPush(DoubleStack* s, double value){
     s->size++;
 }
 
-double doubleStackPop(DoubleStack* s){
-    if (doubleStackIsEmpty(s)){
+double doubleStackPop(DoubleStack* s) {
+    if (doubleStackIsEmpty(s)) {
         printf("Error: Pila de números vacía\n");
         return 0.0;
     }   
@@ -127,15 +127,15 @@ double doubleStackPop(DoubleStack* s){
     return value;
 }
 
-double doubleStackPeek(DoubleStack* s){
-    if (doubleStackIsEmpty(s)){
+double doubleStackPeek(DoubleStack* s) {
+    if (doubleStackIsEmpty(s)) {
         return 0.0;
     }
     return s->top->data;
 }
 
-int doubleStackSize(DoubleStack* s){
-    return (s==NULL) ? 0 : s->size;
+int doubleStackSize(DoubleStack* s) {
+    return (s == NULL) ? 0 : s->size;
 }
 
 void doubleStackDisplay(DoubleStack* s) {
@@ -153,10 +153,10 @@ void doubleStackDisplay(DoubleStack* s) {
     printf("]\n");
 }
 
-// Pila de cadenas
+// Pila de cadenas implementación dinámica
 StringStack* createStringStack() {
     StringStack* s = (StringStack*)malloc(sizeof(StringStack));
-    if (s==NULL){
+    if (s == NULL) {
         return NULL;
     }
     s->top = NULL;
@@ -165,7 +165,7 @@ StringStack* createStringStack() {
 }
 
 void destroyStringStack(StringStack* s) {
-    if (s==NULL) return;   
+    if (s == NULL) return;   
     while (!stringStackIsEmpty(s)) {
         char* str = stringStackPop(s);
         if (str != NULL) {
@@ -186,6 +186,7 @@ void stringStackPush(StringStack* s, const char* value) {
         printf("Error: Memoria insuficiente\n");
         return;
     }
+    // Crear copia de la cadena
     newNode->data = (char*)malloc(strlen(value) + 1);
     if (newNode->data == NULL) {
         free(newNode);
@@ -219,5 +220,5 @@ char* stringStackPeek(StringStack* s) {
 }
 
 int stringStackSize(StringStack* s) {
-    return (s==NULL) ? 0 : s->size;
+    return (s == NULL) ? 0 : s->size;
 }
