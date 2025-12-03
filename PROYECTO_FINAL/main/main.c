@@ -280,7 +280,7 @@ void procesarOpcion(int opcion) {
             if (strlen(expresion) > 0) {
                 char* resultado = convertirPrefijaAPostfija(expresion);
                 if (resultado) {
-                    printf("\n✅ Resultado postfija: %s\n", resultado);
+                    printf("\n Resultado postfija: %s\n", resultado);
                     guardarOperacion(expresion, resultado, "PREFIJA→POSTFIJA");
                     free(resultado);
                 }
@@ -396,7 +396,7 @@ void evaluarExpresionPrefija() {
     }
 }
 
-// Evaluación paso a paso
+// Evaluación paso a paso - CORREGIDA
 void evaluarPasoAPaso() {
     printf("\n═══════════════════════════════════════\n");
     printf("        EVALUACIÓN PASO A PASO\n");
@@ -466,11 +466,15 @@ void evaluarPasoAPaso() {
                 printf("%.2f %c %.2f = %.2f │ ", a, token[0], b, resultado);
             }
             
-            // Mostrar pila
+            // Mostrar pila - CORREGIDO
             printf("[");
-            for (int i = 0; i <= pila->top; i++) {
-                printf("%.2f", pila->items[i]);
-                if (i < pila->top) printf(", ");
+            DoubleNode* actual = pila->top;
+            int primero = 1;
+            while (actual != NULL) {
+                if (!primero) printf(", ");
+                printf("%.2f", actual->data);
+                actual = actual->next;
+                primero = 0;
             }
             printf("]\n");
             
