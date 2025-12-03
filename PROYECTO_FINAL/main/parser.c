@@ -4,7 +4,16 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-#include "utils.h"
+
+// Función auxiliar para verificar operador (definida aquí para uso interno)
+static int esCaracterOperadorLocal(char c) {
+    switch (c) {
+        case '+': case '-': case '*': case '/': case '^':
+            return 1;
+        default:
+            return 0;
+    }
+}
 
 // Crear nueva lista de tokens
 ListaTokens* nuevaListaTokens() {
@@ -18,8 +27,9 @@ ListaTokens* nuevaListaTokens() {
     lista->total=0;
     return lista;
 }
+
 // Crear nuevo token
-Token* nuevoToken(const char* texto, int clase, int lugar) {
+static Token* nuevoToken(const char* texto, int clase, int lugar) {
     if (!texto) return NULL;   
     Token* token = (Token*)malloc(sizeof(Token));
     if (!token) {
@@ -38,6 +48,7 @@ Token* nuevoToken(const char* texto, int clase, int lugar) {
     token->anterior=NULL;
     return token;
 }
+
 // Agregar token a la lista
 void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar) {
     if (!lista || !texto) return;
@@ -53,23 +64,22 @@ void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar) {
     }
     lista->total++;
 }
+
 // Verificar si es operador
 int esCaracterOperador(char c) {
-    switch (c) {
-        case '+': case '-': case '*': case '/': case '^':
-            return 1;
-        default:
-            return 0;
-    }
+    return esCaracterOperadorLocal(c);
 }
+
 // Verificar si es paréntesis
 int esCaracterParentesis(char c) {
     return c == '(' || c == ')';
 }
+
 // Verificar si es letra
 int esCaracterLetra(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
+
 // Verificar si es dígito
 int esCaracterDigito(char c) {
     return c >= '0' && c <= '9';
@@ -108,7 +118,7 @@ int esSignoNegativo(const char* expresion, int pos) {
     if (pos == 0) return 1;
     
     // Está después de un operador
-    if (pos > 0 && esCaracterOperador(expresion[pos-1])) return 1;
+    if (pos > 0 && esCaracterOperadorLocal(expresion[pos-1])) return 1;
     
     // Está después de paréntesis izquierdo
     if (pos > 0 && expresion[pos-1] == '(') return 1;
@@ -168,7 +178,7 @@ ListaTokens* analizarExpresion(const char* expresion) {
             i++;
         }
         // Operador
-        else if (esCaracterOperador(actual)) {
+        else if (esCaracterOperadorLocal(actual)) {
             char temp[2] = {actual, '\0'};
             agregarToken(lista, temp, TOKEN_KIND_OPERADOR, i);
             i++;
@@ -225,6 +235,7 @@ ListaTokens* analizarExpresion(const char* expresion) {
     
     return lista;
 }
+
 // Mostrar todos los tokens
 void mostrarTokens(const ListaTokens* lista) {
     if (!lista || lista->total == 0) {
@@ -249,6 +260,7 @@ void mostrarTokens(const ListaTokens* lista) {
     }
     printf("────┴─────────────┴─────────────\n");
 }
+
 // Verificar validez de los tokens
 int verificarTokens(const ListaTokens* lista) {
     if (!lista || lista->total == 0) {
@@ -334,6 +346,7 @@ int verificarTokens(const ListaTokens* lista) {
     
     return 1; // Válido
 }
+
 // Liberar memoria de la lista
 void liberarListaTokens(ListaTokens* lista) {
     if (!lista) return;
@@ -382,39 +395,4 @@ Token* obtenerTokenPosicion(const ListaTokens* lista, int indice) {
     }
     
     return actual;
-}
-
-// Convertir lista a arreglo de cadenas
-char** listaAArregloCadenas(const ListaTokens* lista, int* cantidad) {
-    if (!lista || lista->total == 0) {
-        *cantidad = 0;
-        return NULL;
-    }
-    
-    char** arreglo = (char**)malloc(lista->total * sizeof(char*));
-    if (!arreglo) {
-        *cantidad = 0;
-        return NULL;
-    }
-    
-    Token* actual = lista->inicio;
-    int i = 0;
-    
-    while (actual && i < lista->total) {
-        arreglo[i] = strdup(actual->texto);
-        if (!arreglo[i]) {
-            // Liberar memoria asignada
-            for (int j = 0; j < i; j++) {
-                free(arreglo[j]);
-            }
-            free(arreglo);
-            *cantidad = 0;
-            return NULL;
-        }
-        i++;
-        actual = actual->siguiente;
-    }
-    
-    *cantidad = lista->total;
-    return arreglo;
 }
