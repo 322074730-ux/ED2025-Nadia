@@ -1,5 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
+
 #include <stdbool.h>
 
 // Nodo para pila de caracteres
@@ -36,7 +37,7 @@ typedef struct {
     int size;
 } StringStack;
 
-// pila de caracteres
+// Pila de caracteres
 CharStack* createCharStack();
 void destroyCharStack(CharStack* s);
 bool charStackIsEmpty(CharStack* s);
@@ -46,7 +47,7 @@ char charStackPeek(CharStack* s);
 int charStackSize(CharStack* s);
 void charStackDisplay(CharStack* s);
 
-// pila de numeros
+// Pila de números
 DoubleStack* createDoubleStack();
 void destroyDoubleStack(DoubleStack* s);
 bool doubleStackIsEmpty(DoubleStack* s);
@@ -56,7 +57,7 @@ double doubleStackPeek(DoubleStack* s);
 int doubleStackSize(DoubleStack* s);
 void doubleStackDisplay(DoubleStack* s);
 
-// pila de cadaeanas
+// Pila de cadenas
 StringStack* createStringStack();
 void destroyStringStack(StringStack* s);
 bool stringStackIsEmpty(StringStack* s);
