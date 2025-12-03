@@ -347,7 +347,7 @@ void evaluarExpresionInfija() {
         printf("\n Resultado: %.4f\n", resultado);
         
         char resultadoStr[50];
-        sprintf(resultadoStr, "%.4f", resultado);
+        snprintf(resultadoStr, sizeof(resultadoStr), "%.4f", resultado);
         guardarOperacion(expresion, resultadoStr, "EVALUAR_INFIJA");
     }
 }
@@ -369,7 +369,7 @@ void evaluarExpresionPostfija() {
         printf("\n Resultado: %.4f\n", resultado);
         
         char resultadoStr[50];
-        sprintf(resultadoStr, "%.4f", resultado);
+        snprintf(resultadoStr, sizeof(resultadoStr), "%.4f", resultado);
         guardarOperacion(expresion, resultadoStr, "EVALUAR_POSTFIJA");
     }
 }
@@ -391,12 +391,12 @@ void evaluarExpresionPrefija() {
         printf("\n Resultado: %.4f\n", resultado);
         
         char resultadoStr[50];
-        sprintf(resultadoStr, "%.4f", resultado);
+        snprintf(resultadoStr, sizeof(resultadoStr), "%.4f", resultado);
         guardarOperacion(expresion, resultadoStr, "EVALUAR_PREFIJA");
     }
 }
 
-// Evaluación paso a paso - CORREGIDA
+// Evaluación paso a paso
 void evaluarPasoAPaso() {
     printf("\n═══════════════════════════════════════\n");
     printf("        EVALUACIÓN PASO A PASO\n");
@@ -466,7 +466,7 @@ void evaluarPasoAPaso() {
                 printf("%.2f %c %.2f = %.2f │ ", a, token[0], b, resultado);
             }
             
-            // Mostrar pila - CORREGIDO
+            // Mostrar pila
             printf("[");
             DoubleNode* actual = pila->top;
             int primero = 1;
@@ -489,7 +489,6 @@ void evaluarPasoAPaso() {
         }
     }
     else if (opcion == 2) { // Prefija
-        // Para prefija, necesitaríamos procesar al revés
         printf("Evaluación prefija no implementada en paso a paso.\n");
         printf("Use evaluación normal para expresiones prefijas.\n");
     }
@@ -504,6 +503,8 @@ void mostrarHistorial() {
 
 // Mostrar estadísticas
 void mostrarEstadisticas() {
+    // Declarar función externa
+    extern void mostrarEstadisticas(void);
     mostrarEstadisticas();
 }
 
@@ -515,6 +516,8 @@ void limpiarHistorial() {
     getchar(); // Limpiar buffer
     
     if (confirmacion == 's' || confirmacion == 'S') {
+        // Declarar función externa
+        extern void limpiarHistorial(void);
         limpiarHistorial();
         printf(" Historial limpiado\n");
     } else {
