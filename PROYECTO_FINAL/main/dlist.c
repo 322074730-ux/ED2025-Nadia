@@ -15,7 +15,7 @@ ListaDoble* crearListaDoble() {
 }
 
 // Crear nuevo nodo
-NodoLista* crearNodo(const char* dato) {
+static NodoLista* crearNodo(const char* dato) {
     NodoLista* nodo = (NodoLista*)malloc(sizeof(NodoLista));
     if (!nodo) return NULL;
     
