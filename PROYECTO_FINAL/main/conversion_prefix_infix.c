@@ -1,67 +1,45 @@
-#include "conversion_prefix_infix.h"
-#include "stack.h"
-#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
+#include "include/stack.h"
+#include "include/utils.h"
 
-// Convertir prefija a infija
+// Declaración explícita para evitar warning
+int esCaracterOperador(char c);
+
 char* convertirPrefijaAInfija(const char* prefija) {
-    if (!prefija || strlen(prefija) == 0) {
-        return strdup("");
-    }
+    int len = strlen(prefija);
+    Stack* stack = createStack(len);
+    char* resultado = NULL;
     
-    StringStack* pila = createStringStack();
-    
-    // Leer de derecha a izquierda
-    for (int i = strlen(prefija) - 1; i >= 0; i--) {
-        // Saltar espacios
-        while (i >= 0 && prefija[i] == ' ') i--;
-        if (i < 0) break;
-        
-        char token[2] = {prefija[i], '\0'};
-        
-        // Si es operando
-        if (isalnum(prefija[i])) {
-            stringStackPush(pila, token);
-        }
-        // Si es operador
-        else if (esCaracterOperador(prefija[i])) {
-            if (stringStackSize(pila) < 2) {
-                destroyStringStack(pila);
-                return strdup("ERROR: Expresión prefija inválida");
+    for (int i = len - 1; i >= 0; i--) {
+        if (esNumero(prefija[i]) || isalpha(prefija[i])) {
+            char* operando = (char*)malloc(2 * sizeof(char));
+            operando[0] = prefija[i];
+            operando[1] = '\0';
+            push(stack, operando);
+        } else if (esCaracterOperador(prefija[i])) {
+            if (stack->top < 1) {
+                // Error
+                return NULL;
             }
             
-            char* operando1 = stringStackPop(pila);
-            char* operando2 = stringStackPop(pila);
+            char* op1 = pop(stack);
+            char* op2 = pop(stack);
             
-            // Crear expresión infija
-            int len = strlen(operando1) + strlen(operando2) + 5;
-            char* expresion = (char*)malloc(len);
-            if (!expresion) {
-                free(operando1);
-                free(operando2);
-                destroyStringStack(pila);
-                return strdup("ERROR: Memoria insuficiente");
-            }
+            char* expresion = (char*)malloc(strlen(op1) + strlen(op2) + 4);
+            sprintf(expresion, "(%s%c%s)", op1, prefija[i], op2);
             
-            snprintf(expresion, len, "(%s %c %s)", operando1, prefija[i], operando2);
-            stringStackPush(pila, expresion);
-            
-            free(operando1);
-            free(operando2);
-            free(expresion);
+            push(stack, expresion);
+            free(op1);
+            free(op2);
         }
     }
     
-    if (stringStackSize(pila) != 1) {
-        destroyStringStack(pila);
-        return strdup("ERROR: Expresión prefija inválida");
+    if (!isEmpty(stack)) {
+        resultado = strdup(pop(stack));
     }
     
-    char* resultado = strdup(stringStackPop(pila));
-    destroyStringStack(pila);
-    
+    destroyStack(stack);
     return resultado;
 }
