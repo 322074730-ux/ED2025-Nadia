@@ -27,7 +27,7 @@ char* convertirPrefijaAInfija(const char* prefija) {
             stringStackPush(pila, token);
         }
         // Si es operador
-        else if (esOperador(prefija[i])) {
+        else if (esCaracterOperador(prefija[i])) {
             if (stringStackSize(pila) < 2) {
                 destroyStringStack(pila);
                 return strdup("ERROR: Expresión prefija inválida");
@@ -37,7 +37,8 @@ char* convertirPrefijaAInfija(const char* prefija) {
             char* operando2 = stringStackPop(pila);
             
             // Crear expresión infija
-            char* expresion = (char*)malloc(strlen(operando1) + strlen(operando2) + 4);
+            int len = strlen(operando1) + strlen(operando2) + 5;
+            char* expresion = (char*)malloc(len);
             if (!expresion) {
                 free(operando1);
                 free(operando2);
@@ -45,7 +46,7 @@ char* convertirPrefijaAInfija(const char* prefija) {
                 return strdup("ERROR: Memoria insuficiente");
             }
             
-            sprintf(expresion, "(%s %c %s)", operando1, prefija[i], operando2);
+            snprintf(expresion, len, "(%s %c %s)", operando1, prefija[i], operando2);
             stringStackPush(pila, expresion);
             
             free(operando1);
