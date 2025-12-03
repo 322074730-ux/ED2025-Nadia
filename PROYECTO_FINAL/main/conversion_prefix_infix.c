@@ -27,7 +27,7 @@ char* convertirPrefijaAInfija(const char* prefija) {
             stringStackPush(pila, token);
         }
         // Si es operador
-        else if (esCaracterOperador(prefija[i])) {
+        else if (esOperador(prefija[i])) {
             if (stringStackSize(pila) < 2) {
                 destroyStringStack(pila);
                 return strdup("ERROR: Expresión prefija inválida");
