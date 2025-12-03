@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "../Include/parser.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,46 +22,52 @@ ListaTokens* nuevaListaTokens() {
         fprintf(stderr, "Fallo al crear lista de tokens\n");
         return NULL;
     }
-    lista->inicio=NULL;
-    lista->fin=NULL;
-    lista->total=0;
+    lista->inicio = NULL;
+    lista->fin = NULL;
+    lista->total = 0;
     return lista;
 }
 
 // Crear nuevo token
 static Token* nuevoToken(const char* texto, int clase, int lugar) {
-    if (!texto) return NULL;   
+    if (!texto) return NULL;
+    
     Token* token = (Token*)malloc(sizeof(Token));
     if (!token) {
         fprintf(stderr, "Fallo al crear token\n");
         return NULL;
     }
+    
     token->texto = strdup(texto);
     if (!token->texto) {
         free(token);
         fprintf(stderr, "Fallo al duplicar texto del token\n");
         return NULL;
     }
-    token->clase=clase;
-    token->lugar=lugar;
-    token->siguiente=NULL;
-    token->anterior=NULL;
+    
+    token->clase = clase;
+    token->lugar = lugar;
+    token->siguiente = NULL;
+    token->anterior = NULL;
     return token;
 }
 
 // Agregar token a la lista
 void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar) {
     if (!lista || !texto) return;
-    Token* token=nuevoToken(texto, clase, lugar);
+    
+    Token* token = nuevoToken(texto, clase, lugar);
     if (!token) return;
-    if (lista->total==0) {
-        lista->inicio=token;
-        lista->fin=token;
+    
+    if (lista->total == 0) {
+        lista->inicio = token;
+        lista->fin = token;
     } else {
-        lista->fin->siguiente=token;
-        token->anterior=lista->fin;
-        lista->fin=token;
+        lista->fin->siguiente = token;
+        token->anterior = lista->fin;
+        lista->fin = token;
     }
+    
     lista->total++;
 }
 
@@ -395,4 +401,9 @@ Token* obtenerTokenPosicion(const ListaTokens* lista, int indice) {
     }
     
     return actual;
+}
+
+// Función esNumero para compatibilidad con otros módulos
+int esNumero(char c) {
+    return esCaracterDigito(c) || c == '.';
 }
