@@ -1,4 +1,3 @@
-#include "include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,7 +44,10 @@ void leerCadena(char* buffer, int tamano, const char* mensaje) {
         printf("%s", mensaje);
     }
     
-    fgets(buffer, tamano, stdin);
+    if (fgets(buffer, tamano, stdin) == NULL) {
+        buffer[0] = '\0';
+        return;
+    }
     
     // Eliminar salto de línea
     size_t len = strlen(buffer);
@@ -120,10 +122,39 @@ int contarOperadores(const char* expresion) {
 }
 
 void limpiarPantalla() {
-    system("cls");
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
 
 void pausar() {
     printf("\nPresione Enter para continuar...");
     getchar();
+}
+
+// Función faltante
+int esNumeroValido(const char* str) {
+    if (!str || !*str) return 0;
+    
+    int punto = 0;
+    int digitos = 0;
+    
+    for (int i = 0; str[i]; i++) {
+        if (i == 0 && str[i] == '-') {
+            continue; // Signo negativo permitido al inicio
+        }
+        
+        if (str[i] == '.') {
+            punto++;
+            if (punto > 1) return 0;
+        } else if (!isdigit(str[i])) {
+            return 0;
+        } else {
+            digitos++;
+        }
+    }
+    
+    return digitos > 0;
 }
