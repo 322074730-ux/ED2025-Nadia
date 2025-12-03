@@ -26,7 +26,7 @@ char* convertirPostfijaAInfija(const char* postfija) {
             stringStackPush(pila, token);
         }
         // Si es operador
-        else if (esCaracterOperador(postfija[i])) {
+        else if (esOperador(postfija[i])) {
             if (stringStackSize(pila) < 2) {
                 destroyStringStack(pila);
                 return strdup("ERROR: Expresión postfija inválida");
