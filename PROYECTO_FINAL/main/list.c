@@ -15,7 +15,7 @@ ListaSimple* crearListaSimple() {
 }
 
 // Crear nuevo nodo simple
-NodoSimple* crearNodoSimple(const char* valor) {
+static NodoSimple* crearNodoSimple(const char* valor) {
     NodoSimple* nodo = (NodoSimple*)malloc(sizeof(NodoSimple));
     if (!nodo) return NULL;
     
