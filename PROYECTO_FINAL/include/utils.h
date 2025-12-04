@@ -5,7 +5,7 @@
 void limpiarBuffer();
 int esNumero(char c);
 int esCaracterOperador(char c);
-int precedencia(char operador);
+int precedencia(char operador);  // AGREGADA
 int esOperadorValido(char c);
 int esParentesis(char c);
 void leerCadena(char* buffer, int tamano, const char* mensaje);
