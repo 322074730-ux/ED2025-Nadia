@@ -6,7 +6,6 @@
 
 #define ARCHIVO_HISTORIAL "historial_calculadora.txt"
 
-// Guardar operaciÃ³n en archivo
 void guardarOperacion(const char* expresion, const char* resultado, const char* tipo) {
     FILE* archivo = fopen(ARCHIVO_HISTORIAL, "a");
     if (!archivo) {
@@ -29,7 +28,7 @@ void guardarOperacion(const char* expresion, const char* resultado, const char* 
     fprintf(archivo, "%s: %s -> %s\n", tipo, expresion, resultado);
     fclose(archivo);
     
-    printf("OperaciÃ³n guardada en el historial\n");
+    printf("Operacion guardada en el historial\n");
 }
 
 // Leer historial completo
@@ -40,10 +39,7 @@ void leerHistorial() {
         return;
     }
     
-    printf("\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n");
     printf("           HISTORIAL DE OPERACIONES\n");
-    printf("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n\n");
-    
     char linea[256];
     int contador = 1;
     
@@ -54,12 +50,9 @@ void leerHistorial() {
     if (contador == 1) {
         printf("Historial vacÃ­o\n");
     }
-    
-    printf("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n");
     fclose(archivo);
 }
 
-// Limpiar historial
 void limpiarHistorial() {
     FILE* archivo = fopen(ARCHIVO_HISTORIAL, "w");
     if (!archivo) {
@@ -71,7 +64,6 @@ void limpiarHistorial() {
     printf("Historial limpiado correctamente\n");
 }
 
-// Guardar resultado de evaluaciÃ³n
 void guardarResultadoEvaluacion(const char* expresion, double resultado) {
     FILE* archivo = fopen(ARCHIVO_HISTORIAL, "a");
     if (!archivo) return;
@@ -88,11 +80,10 @@ void guardarResultadoEvaluacion(const char* expresion, double resultado) {
             tiempoLocal->tm_min,
             tiempoLocal->tm_sec);
     
-    fprintf(archivo, "EVALUACIÃ“N: %s = %.4f\n", expresion, resultado);
+    fprintf(archivo, "EVALUACION: %s = %.4f\n", expresion, resultado);
     fclose(archivo);
 }
 
-// Mostrar estadÃ­sticas del historial
 void mostrarEstadisticas() {
     FILE* archivo = fopen(ARCHIVO_HISTORIAL, "r");
     if (!archivo) {
@@ -107,17 +98,14 @@ void mostrarEstadisticas() {
     
     while (fgets(linea, sizeof(linea), archivo)) {
         totalOperaciones++;
-        if (strstr(linea, "CONVERSIÃ“N")) conversiones++;
-        if (strstr(linea, "EVALUACIÃ“N")) evaluaciones++;
+        if (strstr(linea, "CONVERSACION")) conversiones++;
+        if (strstr(linea, "EVALUACION")) evaluaciones++;
     }
     
     fclose(archivo);
     
-    printf("\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n");
-    printf("            ESTADÃSTICAS\n");
-    printf("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n");
+    printf("            ESTADISTICAS:\n");
     printf("Total de operaciones: %d\n", totalOperaciones);
     printf("Conversiones: %d\n", conversiones);
     printf("Evaluaciones: %d\n", evaluaciones);
-    printf("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n");
 }
