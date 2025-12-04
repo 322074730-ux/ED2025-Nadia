@@ -1,7 +1,8 @@
 
 # ED2025 – Convertidor de Expresiones Algebraicas  
 ### Proyecto Final – Estructuras de Datos  
-Autora: Nadia
+Autora: Olvera García Nadia 
+Num.Cuenta: 32207473-0
 
 
 ## Descripción General
