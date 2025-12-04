@@ -4,10 +4,10 @@
 #include <ctype.h>
 #include "../Include/utils.h"
 
-// Declaración explícita para evitar warning
+// DeclaraciÃ³n explÃ­cita para evitar warning
 int esCaracterOperador(char c);
 
-// Definición de Stack para este archivo
+// DefiniciÃ³n de Stack para este archivo
 typedef struct {
     char** items;
     int top;
