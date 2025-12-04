@@ -50,6 +50,8 @@ PROYECTO_FINAL/
 
 
 
+````
+
 El proyecto está organizado en módulos independientes que permiten separar claramente cada funcionalidad, siguiendo buenas prácticas de programación estructurada en C.
 
 ---
@@ -62,18 +64,13 @@ El proyecto está organizado en módulos independientes que permiten separar cla
 
 ```bash
 cd "C:\Users\nadia\OneDrive\Escritorio\ED2025-Nadia-main (14)\ED2025-Nadia-main\PROYECTO_FINAL"
-
-El proyecto está organizado en módulos independientes que permiten separar claramente cada funcionalidad, siguiendo buenas prácticas de programación estructurada en C.
-
-## Compilación
-### Método manual (Windows)
-1. Abrir la terminal y ubicarse en el directorio del proyecto:
-
-cd "C:\Users\nadia\OneDrive\Escritorio\ED2025-Nadia-main (17)\ED2025-Nadia-main\PROYECTO_FINAL"
+````
 
 2. Compilar el proyecto usando GCC:
 
+```bash
 gcc -Iinclude main/*.c -o calc.exe -lm
+```
 
 3. Ejecutar el programa según la opción deseada:
 
@@ -84,6 +81,7 @@ gcc -Iinclude main/*.c -o calc.exe -lm
 | Mostrar versión  | .\calc.exe -v |
 | Mostrar créditos | .\calc.exe -c |
 
+---
 
 ## Funcionalidades Disponibles
 
@@ -105,6 +103,8 @@ gcc -Iinclude main/*.c -o calc.exe -lm
 11. Créditos
 12. Salir
 
+---
+
 ## Módulos Implementados
 
 | Módulo       | Descripción                                                                             |
@@ -116,7 +116,7 @@ gcc -Iinclude main/*.c -o calc.exe -lm
 | utils        | Funciones de apoyo y utilidades generales                                               |
 | conversion_* | Implementación de cada conversión entre infija, postfija y prefija                      |
 
-
+---
 
 ## Objetivo Académico
 
@@ -128,9 +128,30 @@ Este proyecto forma parte del curso de Estructuras de Datos y busca demostrar:
 * Manejo de archivos y persistencia de datos
 * Construcción de un sistema con menú interactivo
 
+---
+
+## Mejoras Futuras
+
+* Implementación de un evaluador de expresiones en las tres notaciones
+* Integración de una interfaz gráfica básica
+* Ampliación del sistema de estadísticas
+* Soporte para archivos de configuración o formatos estructurados
+
+---
+
 ## Autora
 
 Nadia Olvera García
 Proyecto desarrollado durante el curso ED2025
 
+---
+
+Si deseas, puedo crear también:
+
+* Una versión en inglés
+* Un logo para tu repositorio
+* Badges profesionales (versión, lenguaje, licencia, etc.)
+* Un archivo LICENSE
+
+¿Quieres agregar algo más al README?
 
