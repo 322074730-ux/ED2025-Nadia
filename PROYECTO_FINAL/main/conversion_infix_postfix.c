@@ -6,7 +6,6 @@
 #include "../Include/parser.h"
 #include "../Include/utils.h"
 
-// Verificar precedencia de operadores
 int obtenerPrecedencia(char operador) {
     switch (operador) {
         case '+':
@@ -17,40 +16,31 @@ int obtenerPrecedencia(char operador) {
         default: return 0;
     }
 }
-
-// Convertir expresiÃ³n infija a postfija
-char* convertirInfijaAPostfija(const char* infija) {
-    if (!infija || strlen(infija) == 0) {
+char* convertirInfijaAPostfija(const char* infija){
+    if (!infija || strlen(infija)==0){
         return strdup("");
     }
-    
     CharStack* pila = createCharStack();
     if (!pila) return strdup("ERROR: No se pudo crear la pila");
-    
     char* resultado = (char*)malloc(strlen(infija) * 3 + 1);
     if (!resultado) {
         destroyCharStack(pila);
         return strdup("ERROR: Memoria insuficiente");
     }
     
-    int indice = 0;
+    int indice=0;
+    for (int i=0; infija[i] != '\0'; i++) {
+        char actual=infija[i];
+        
+        if (actual==' ') continue;
     
-    for (int i = 0; infija[i] != '\0'; i++) {
-        char actual = infija[i];
-        
-        // Ignorar espacios
-        if (actual == ' ') continue;
-        
-        // Si es operando (letra o dÃ­gito)
-        if (isalnum(actual)) {
-            resultado[indice++] = actual;
+        if (isalnum(actual)){
+            resultado[indice++]=actual;
             resultado[indice++] = ' ';
         }
-        // Si es parÃ©ntesis izquierdo
         else if (actual == '(') {
             charStackPush(pila, actual);
         }
-        // Si es parÃ©ntesis derecho
         else if (actual == ')') {
             while (!charStackIsEmpty(pila) && charStackPeek(pila) != '(') {
                 resultado[indice++] = charStackPop(pila);
@@ -60,7 +50,6 @@ char* convertirInfijaAPostfija(const char* infija) {
                 charStackPop(pila); // Eliminar '('
             }
         }
-        // Si es operador
         else if (esCaracterOperador(actual)) {
             while (!charStackIsEmpty(pila) && 
                    obtenerPrecedencia(charStackPeek(pila)) >= obtenerPrecedencia(actual) &&
@@ -83,7 +72,6 @@ char* convertirInfijaAPostfija(const char* infija) {
     } else {
         resultado[indice] = '\0';
     }
-    
     destroyCharStack(pila);
     return resultado;
 }
