@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Nuestra propia implementación de strdup
 static char* mi_strdup(const char* str) {
     if (!str) return NULL;
     
@@ -17,7 +16,6 @@ static char* mi_strdup(const char* str) {
     return copy;
 }
 
-// Crear nueva lista doble
 ListaDoble* crearListaDoble() {
     ListaDoble* lista = (ListaDoble*)malloc(sizeof(ListaDoble));
     if (!lista) return NULL;
@@ -28,12 +26,10 @@ ListaDoble* crearListaDoble() {
     return lista;
 }
 
-// Crear nuevo nodo
 static NodoLista* crearNodo(const char* dato) {
     NodoLista* nodo = (NodoLista*)malloc(sizeof(NodoLista));
     if (!nodo) return NULL;
     
-    // USAMOS NUESTRA PROPIA FUNCIÓN mi_strdup
     nodo->dato = mi_strdup(dato);
     if (!nodo->dato) {
         free(nodo);
@@ -45,7 +41,6 @@ static NodoLista* crearNodo(const char* dato) {
     return nodo;
 }
 
-// Agregar al final de la lista
 void agregarFinalLista(ListaDoble* lista, const char* dato) {
     if (!lista || !dato) return;
     
@@ -64,7 +59,6 @@ void agregarFinalLista(ListaDoble* lista, const char* dato) {
     lista->cantidad++;
 }
 
-// Agregar al inicio de la lista
 void agregarInicioLista(ListaDoble* lista, const char* dato) {
     if (!lista || !dato) return;
     
@@ -83,7 +77,6 @@ void agregarInicioLista(ListaDoble* lista, const char* dato) {
     lista->cantidad++;
 }
 
-// Mostrar lista
 void mostrarLista(ListaDoble* lista) {
     if (!lista || lista->cantidad == 0) {
         printf("Lista vacía\n");
@@ -98,7 +91,6 @@ void mostrarLista(ListaDoble* lista) {
     printf("\n");
 }
 
-// Mostrar lista en reversa
 void mostrarListaReversa(ListaDoble* lista) {
     if (!lista || lista->cantidad == 0) {
         printf("Lista vacía\n");
@@ -113,12 +105,10 @@ void mostrarListaReversa(ListaDoble* lista) {
     printf("\n");
 }
 
-// Obtener tamaño de la lista
 int tamanoLista(ListaDoble* lista) {
     return lista ? lista->cantidad : 0;
 }
 
-// Obtener elemento por índice
 char* obtenerElemento(ListaDoble* lista, int indice) {
     if (!lista || indice < 0 || indice >= lista->cantidad) {
         return NULL;
@@ -132,7 +122,6 @@ char* obtenerElemento(ListaDoble* lista, int indice) {
     return actual ? actual->dato : NULL;
 }
 
-// Eliminar elemento por índice
 void eliminarElemento(ListaDoble* lista, int indice) {
     if (!lista || indice < 0 || indice >= lista->cantidad) {
         return;
@@ -162,7 +151,6 @@ void eliminarElemento(ListaDoble* lista, int indice) {
     lista->cantidad--;
 }
 
-// Destruir lista completa
 void destruirListaDoble(ListaDoble* lista) {
     if (!lista) return;
     
