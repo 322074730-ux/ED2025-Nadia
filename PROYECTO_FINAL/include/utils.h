@@ -15,6 +15,6 @@ int contarOperandos(const char* expresion);
 int contarOperadores(const char* expresion);
 void limpiarPantalla();
 void pausar();
-int esNumeroValido(const char* str);  // Agregado
+int esNumeroValido(const char* str);
 
 #endif // UTILS_H
