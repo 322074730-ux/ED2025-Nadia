@@ -10,7 +10,7 @@ typedef struct CharNode {
     struct CharNode* next;
 } CharNode;
 
-// Nodo para pila de números
+// Nodo para pila de nÃºmeros
 typedef struct DoubleNode {
     double data;
     struct DoubleNode* next;
@@ -48,7 +48,7 @@ char charStackPeek(CharStack* s);
 int charStackSize(CharStack* s);
 void charStackDisplay(CharStack* s);
 
-// Pila de números
+// Pila de nÃºmeros
 DoubleStack* createDoubleStack();
 void destroyDoubleStack(DoubleStack* s);
 bool doubleStackIsEmpty(DoubleStack* s);
