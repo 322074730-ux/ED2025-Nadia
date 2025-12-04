@@ -8,17 +8,6 @@
 // Incluimos utils.h para usar las funciones que ya están ahí
 #include "../Include/utils.h"
 
-// Función auxiliar para verificar operador (definida aquí para uso interno)
-// NOTA: Ya no la necesitamos porque está en utils.h
-// static int esCaracterOperadorLocal(char c) {
-//     switch (c) {
-//         case '+': case '-': case '*': case '/': case '^':
-//             return 1;
-//         default:
-//             return 0;
-//     }
-// }
-
 // Crear nueva lista de tokens
 ListaTokens* nuevaListaTokens() {
     ListaTokens* lista = (ListaTokens*)malloc(sizeof(ListaTokens));
@@ -75,14 +64,6 @@ void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar) {
     lista->total++;
 }
 
-// ============ NOTA: LAS SIGUIENTES FUNCIONES YA NO ESTÁN AQUÍ ============
-// ============ SE MOVIERON A utils.c PARA EVITAR DUPLICACIÓN =============
-
-// Verificar si es operador (YA NO ESTÁ - usamos la de utils.h)
-// int esCaracterOperador(char c) {
-//     return esCaracterOperadorLocal(c);
-// }
-
 // Verificar si es paréntesis
 int esCaracterParentesis(char c) {
     return c == '(' || c == ')';
@@ -97,9 +78,6 @@ int esCaracterLetra(char c) {
 int esCaracterDigito(char c) {
     return c >= '0' && c <= '9';
 }
-
-// ============ NOTA: esNumeroValido TAMPOCO ESTÁ AQUÍ ============
-// ============ SE USA LA DE utils.h =============================
 
 // Verificar si es un signo negativo válido
 int esSignoNegativo(const char* expresion, int pos) {
@@ -130,8 +108,6 @@ const char* nombreClaseToken(int clase) {
         default: return "INDEFINIDO";
     }
 }
-
-// ============ FUNCIÓN PRINCIPAL ============
 
 // Función principal de análisis
 ListaTokens* analizarExpresion(const char* expresion) {
@@ -355,8 +331,6 @@ void liberarListaTokens(ListaTokens* lista) {
     free(lista);
 }
 
-// ============ FUNCIONES ADICIONALES ============
-
 // Contar tokens por clase
 int contarTokensClase(const ListaTokens* lista, int clase) {
     if (!lista) return 0;
@@ -387,5 +361,3 @@ Token* obtenerTokenPosicion(const ListaTokens* lista, int indice) {
     
     return actual;
 }
-
-// NOTA: La función esNumero NO está aquí, se usa la de utils.h
