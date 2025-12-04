@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Nuestra propia implementación de strdup
 static char* mi_strdup(const char* str) {
     if (!str) return NULL;
     
@@ -17,7 +16,6 @@ static char* mi_strdup(const char* str) {
     return copy;
 }
 
-// Crear nueva lista simple
 ListaSimple* crearListaSimple() {
     ListaSimple* lista = (ListaSimple*)malloc(sizeof(ListaSimple));
     if (!lista) return NULL;
@@ -28,12 +26,11 @@ ListaSimple* crearListaSimple() {
     return lista;
 }
 
-// Crear nuevo nodo simple
 static NodoSimple* crearNodoSimple(const char* valor) {
     NodoSimple* nodo = (NodoSimple*)malloc(sizeof(NodoSimple));
     if (!nodo) return NULL;
     
-    // USAMOS NUESTRA PROPIA FUNCIÓN mi_strdup
+   
     nodo->valor = mi_strdup(valor);
     if (!nodo->valor) {
         free(nodo);
@@ -62,7 +59,7 @@ void agregarListaSimple(ListaSimple* lista, const char* valor) {
     lista->total++;
 }
 
-// Imprimir lista simple
+
 void imprimirListaSimple(ListaSimple* lista) {
     if (!lista || lista->total == 0) {
         printf("[]\n");
@@ -79,12 +76,12 @@ void imprimirListaSimple(ListaSimple* lista) {
     printf("]\n");
 }
 
-// Contar elementos
+
 int contarListaSimple(ListaSimple* lista) {
     return lista ? lista->total : 0;
 }
 
-// Liberar memoria
+
 void liberarListaSimple(ListaSimple* lista) {
     if (!lista) return;
     
