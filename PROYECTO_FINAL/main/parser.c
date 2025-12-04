@@ -5,20 +5,6 @@
 #include <ctype.h>
 #include <math.h>
 
-// Incluimos utils.h para usar las funciones que ya estÃ¡n ahÃ­
-#include "../Include/utils.h"
-
-// FunciÃ³n auxiliar para verificar operador (definida aquÃ­ para uso interno)
-// NOTA: Ya no la necesitamos porque estÃ¡ en utils.h
-// static int esCaracterOperadorLocal(char c) {
-//     switch (c) {
-//         case '+': case '-': case '*': case '/': case '^':
-//             return 1;
-//         default:
-//             return 0;
-//     }
-// }
-
 // Crear nueva lista de tokens
 ListaTokens* nuevaListaTokens() {
     ListaTokens* lista = (ListaTokens*)malloc(sizeof(ListaTokens));
