@@ -5,6 +5,36 @@
 #include <ctype.h>
 #include <math.h>
 
+// Incluimos utils.h para usar las funciones que ya están ahí
+#include "../Include/utils.h"
+
+// ============ NUESTRA PROPIA IMPLEMENTACIÓN DE STRDUP ============
+// Para compatibilidad con Windows y evitar problemas de compilación
+static char* mi_strdup(const char* str) {
+    if (!str) return NULL;
+    
+    size_t len = strlen(str) + 1;  // +1 para el carácter nulo
+    char* copy = (char*)malloc(len * sizeof(char));
+    
+    if (copy) {
+        strcpy(copy, str);
+    }
+    
+    return copy;
+}
+// ============ FIN DE MI_STRDUP ============
+
+// Función auxiliar para verificar operador (definida aquí para uso interno)
+// NOTA: Ya no la necesitamos porque está en utils.h
+// static int esCaracterOperadorLocal(char c) {
+//     switch (c) {
+//         case '+': case '-': case '*': case '/': case '^':
+//             return 1;
+//         default:
+//             return 0;
+//     }
+// }
+
 // Crear nueva lista de tokens
 ListaTokens* nuevaListaTokens() {
     ListaTokens* lista = (ListaTokens*)malloc(sizeof(ListaTokens));
@@ -28,7 +58,8 @@ static Token* nuevoToken(const char* texto, int clase, int lugar) {
         return NULL;
     }
     
-    token->texto = strdup(texto);
+    // USAMOS NUESTRA PROPIA FUNCIÓN mi_strdup EN LUGAR DE strdup
+    token->texto = mi_strdup(texto);
     if (!token->texto) {
         free(token);
         fprintf(stderr, "Fallo al duplicar texto del token\n");
@@ -61,15 +92,14 @@ void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar) {
     lista->total++;
 }
 
-// ============ NOTA: LAS SIGUIENTES FUNCIONES YA NO ESTÃN AQUÃ ============
-// ============ SE MOVIERON A utils.c PARA EVITAR DUPLICACIÃ“N =============
+// ============ FUNCIONES DE VERIFICACIÓN (YA NO ESTÁN EN utils.c) ============
 
-// Verificar si es operador (YA NO ESTÃ - usamos la de utils.h)
-// int esCaracterOperador(char c) {
-//     return esCaracterOperadorLocal(c);
-// }
+// Verificar si es operador (versión local para este archivo)
+int esCaracterOperador(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+}
 
-// Verificar si es parÃ©ntesis
+// Verificar si es paréntesis
 int esCaracterParentesis(char c) {
     return c == '(' || c == ')';
 }
@@ -79,25 +109,50 @@ int esCaracterLetra(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
 
-// Verificar si es dÃ­gito
+// Verificar si es dígito
 int esCaracterDigito(char c) {
     return c >= '0' && c <= '9';
 }
 
-// ============ NOTA: esNumeroValido TAMPOCO ESTÃ AQUÃ ============
+// Verificar si es un número válido (versión local)
+int esNumeroValido(const char* str) {
+    if (!str || !*str) return 0;
+    
+    int punto = 0;
+    int digitos = 0;
+    
+    for (int i = 0; str[i]; i++) {
+        if (i == 0 && str[i] == '-') {
+            continue; // Signo negativo permitido al inicio
+        }
+        
+        if (str[i] == '.') {
+            punto++;
+            if (punto > 1) return 0;
+        } else if (!isdigit(str[i])) {
+            return 0;
+        } else {
+            digitos++;
+        }
+    }
+    
+    return digitos > 0;
+}
+
+// ============ NOTA: esNumeroValido TAMPOCO ESTÁ AQUÍ ============
 // ============ SE USA LA DE utils.h =============================
 
-// Verificar si es un signo negativo vÃ¡lido
+// Verificar si es un signo negativo válido
 int esSignoNegativo(const char* expresion, int pos) {
     if (expresion[pos] != '-') return 0;
     
-    // EstÃ¡ al inicio de la expresiÃ³n
+    // Está al inicio de la expresión
     if (pos == 0) return 1;
     
-    // EstÃ¡ despuÃ©s de un operador
+    // Está después de un operador
     if (pos > 0 && esCaracterOperador(expresion[pos-1])) return 1;
     
-    // EstÃ¡ despuÃ©s de parÃ©ntesis izquierdo
+    // Está después de paréntesis izquierdo
     if (pos > 0 && expresion[pos-1] == '(') return 1;
     
     return 0;
@@ -117,12 +172,12 @@ const char* nombreClaseToken(int clase) {
     }
 }
 
-// ============ FUNCIÃ“N PRINCIPAL ============
+// ============ FUNCIÓN PRINCIPAL ============
 
-// FunciÃ³n principal de anÃ¡lisis
+// Función principal de análisis
 ListaTokens* analizarExpresion(const char* expresion) {
     if (!expresion) {
-        fprintf(stderr, "ExpresiÃ³n nula\n");
+        fprintf(stderr, "Expresión nula\n");
         return NULL;
     }
     
@@ -142,13 +197,13 @@ ListaTokens* analizarExpresion(const char* expresion) {
             continue;
         }
         
-        // ParÃ©ntesis izquierdo
+        // Paréntesis izquierdo
         if (actual == '(') {
             char temp[2] = {actual, '\0'};
             agregarToken(lista, temp, TOKEN_KIND_PAR_IZQ, i);
             i++;
         }
-        // ParÃ©ntesis derecho
+        // Paréntesis derecho
         else if (actual == ')') {
             char temp[2] = {actual, '\0'};
             agregarToken(lista, temp, TOKEN_KIND_PAR_DER, i);
@@ -166,7 +221,7 @@ ListaTokens* analizarExpresion(const char* expresion) {
             agregarToken(lista, temp, TOKEN_KIND_LETRA, i);
             i++;
         }
-        // NÃºmero (entero, decimal, negativo)
+        // Número (entero, decimal, negativo)
         else if (esCaracterDigito(actual) || 
                 esSignoNegativo(expresion, i)) {
             
@@ -177,13 +232,13 @@ ListaTokens* analizarExpresion(const char* expresion) {
                 i++;
             }
             
-            // Capturar todos los dÃ­gitos y punto decimal
+            // Capturar todos los dígitos y punto decimal
             while (i < longitud && 
                    (esCaracterDigito(expresion[i]) || expresion[i] == '.')) {
                 i++;
             }
             
-            // Extraer el nÃºmero
+            // Extraer el número
             int tamano = i - inicio;
             if (tamano > 0) {
                 char* numero = (char*)malloc(tamano + 1);
@@ -191,7 +246,7 @@ ListaTokens* analizarExpresion(const char* expresion) {
                     strncpy(numero, expresion + inicio, tamano);
                     numero[tamano] = '\0';
                     
-                    // Verificar que sea nÃºmero vÃ¡lido
+                    // Verificar que sea número válido (usamos nuestra versión local)
                     if (esNumeroValido(numero)) {
                         agregarToken(lista, numero, TOKEN_KIND_NUMERO, inicio);
                     } else {
@@ -202,7 +257,7 @@ ListaTokens* analizarExpresion(const char* expresion) {
                 }
             }
         }
-        // CarÃ¡cter desconocido
+        // Carácter desconocido
         else {
             char temp[2] = {actual, '\0'};
             agregarToken(lista, temp, TOKEN_KIND_DESCONOCIDO, i);
@@ -216,32 +271,32 @@ ListaTokens* analizarExpresion(const char* expresion) {
 // Mostrar todos los tokens
 void mostrarTokens(const ListaTokens* lista) {
     if (!lista || lista->total == 0) {
-        printf("Lista de tokens vacÃ­a\n");
+        printf("Lista de tokens vacía\n");
         return;
     }
     
-    printf("\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n");
-    printf("       ANÃLISIS DE EXPRESIÃ“N\n");
-    printf("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n");
+    printf("\n───────────────────────────────────────────\n");
+    printf("       ANÁLISIS DE EXPRESIÓN\n");
+    printf("───────────────────────────────────────────\n");
     printf("Total de tokens: %d\n\n", lista->total);
-    printf("Pos â”‚ Token       â”‚ Clase\n");
-    printf("â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€\n");
+    printf("Pos ┃ Token       ┃ Clase\n");
+    printf("────┼─────────────┼─────────────\n");
     
     Token* actual = lista->inicio;
     while (actual) {
-        printf("%3d â”‚ %-11s â”‚ %s\n", 
+        printf("%3d ┃ %-11s ┃ %s\n", 
                actual->lugar, 
                actual->texto, 
                nombreClaseToken(actual->clase));
         actual = actual->siguiente;
     }
-    printf("â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€\n");
+    printf("────┴─────────────┴─────────────\n");
 }
 
 // Verificar validez de los tokens
 int verificarTokens(const ListaTokens* lista) {
     if (!lista || lista->total == 0) {
-        fprintf(stderr, "Lista de tokens vacÃ­a\n");
+        fprintf(stderr, "Lista de tokens vacía\n");
         return 0;
     }
     
@@ -249,14 +304,14 @@ int verificarTokens(const ListaTokens* lista) {
     Token* actual = lista->inicio;
     while (actual) {
         if (actual->clase == TOKEN_KIND_DESCONOCIDO) {
-            fprintf(stderr, "Error: CarÃ¡cter no vÃ¡lido en posiciÃ³n %d: '%s'\n", 
+            fprintf(stderr, "Error: Carácter no válido en posición %d: '%s'\n", 
                     actual->lugar, actual->texto);
             return 0;
         }
         actual = actual->siguiente;
     }
     
-    // Verificar parÃ©ntesis balanceados
+    // Verificar paréntesis balanceados
     int contador = 0;
     actual = lista->inicio;
     while (actual) {
@@ -265,7 +320,7 @@ int verificarTokens(const ListaTokens* lista) {
         } else if (actual->clase == TOKEN_KIND_PAR_DER) {
             contador--;
             if (contador < 0) {
-                fprintf(stderr, "Error: ParÃ©ntesis derecho sin izquierdo en posiciÃ³n %d\n", 
+                fprintf(stderr, "Error: Paréntesis derecho sin izquierdo en posición %d\n", 
                         actual->lugar);
                 return 0;
             }
@@ -274,7 +329,7 @@ int verificarTokens(const ListaTokens* lista) {
     }
     
     if (contador > 0) {
-        fprintf(stderr, "Error: Faltan %d parÃ©ntesis derechos\n", contador);
+        fprintf(stderr, "Error: Faltan %d paréntesis derechos\n", contador);
         return 0;
     }
     
@@ -294,25 +349,25 @@ int verificarTokens(const ListaTokens* lista) {
         // Verificar dos operadores seguidos
         if (claseAnterior == TOKEN_KIND_OPERADOR && 
             claseActual == TOKEN_KIND_OPERADOR) {
-            fprintf(stderr, "Error: Dos operadores seguidos en posiciÃ³n %d\n", 
+            fprintf(stderr, "Error: Dos operadores seguidos en posición %d\n", 
                     actual->lugar);
             return 0;
         }
         
-        // Verificar operador despuÃ©s de parÃ©ntesis izquierdo (excepto negativo)
+        // Verificar operador después de paréntesis izquierdo (excepto negativo)
         if (claseAnterior == TOKEN_KIND_PAR_IZQ && 
             claseActual == TOKEN_KIND_OPERADOR) {
             if (strcmp(actual->texto, "-") != 0) {
-                fprintf(stderr, "Error: Operador '%s' despuÃ©s de '(' en posiciÃ³n %d\n", 
+                fprintf(stderr, "Error: Operador '%s' después de '(' en posición %d\n", 
                         actual->texto, actual->lugar);
                 return 0;
             }
         }
         
-        // Verificar parÃ©ntesis derecho despuÃ©s de operador
+        // Verificar paréntesis derecho después de operador
         if (claseAnterior == TOKEN_KIND_OPERADOR && 
             claseActual == TOKEN_KIND_PAR_DER) {
-            fprintf(stderr, "Error: ')' despuÃ©s de operador en posiciÃ³n %d\n", 
+            fprintf(stderr, "Error: ')' después de operador en posición %d\n", 
                     actual->lugar);
             return 0;
         }
@@ -321,7 +376,7 @@ int verificarTokens(const ListaTokens* lista) {
         actual = actual->siguiente;
     }
     
-    return 1; // VÃ¡lido
+    return 1; // Válido
 }
 
 // Liberar memoria de la lista
@@ -360,7 +415,7 @@ int contarTokensClase(const ListaTokens* lista, int clase) {
     return contador;
 }
 
-// Obtener token en posiciÃ³n especÃ­fica
+// Obtener token en posición específica
 Token* obtenerTokenPosicion(const ListaTokens* lista, int indice) {
     if (!lista || indice < 0 || indice >= lista->total) {
         return NULL;
