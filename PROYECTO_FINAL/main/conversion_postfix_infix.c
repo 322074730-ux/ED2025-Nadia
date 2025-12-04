@@ -5,17 +5,14 @@
 #include "../Include/stack.h"
 #include "../Include/utils.h"
 
-// DeclaraciÃ³n explÃ­cita para evitar warning
 int esCaracterOperador(char c);
 
-// DefiniciÃ³n de Stack para este archivo (diferente de la pila de cadenas)
 typedef struct {
     char** items;
     int top;
     int capacity;
 } Stack;
 
-// CAMBIO: Todas las funciones de Stack son static
 static Stack* createStack(int capacity) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
     stack->capacity = capacity;
@@ -73,7 +70,7 @@ char* convertirPostfijaAInfija(const char* postfija) {
             char* op2 = pop(stack);
             char* op1 = pop(stack);
             
-            // +4 para parentesis, operador y null terminator
+
             int exp_len = strlen(op1) + strlen(op2) + 4;
             char* expresion = (char*)malloc(exp_len);
             sprintf(expresion, "(%s%c%s)", op1, postfija[i], op2);
@@ -91,7 +88,6 @@ char* convertirPostfijaAInfija(const char* postfija) {
         resultado = strdup("");
     }
     
-    // Limpiar pila restante
     while (!isEmpty(stack)) {
         char* temp = pop(stack);
         free(temp);
