@@ -35,12 +35,16 @@ void mostrarTokens(const ListaTokens* lista);
 int verificarTokens(const ListaTokens* lista);
 const char* nombreClaseToken(int clase);
 
-// Funciones de ayuda
-int esCaracterOperador(char c);
+// Funciones auxiliares (NO duplicar las de utils.h)
 int esCaracterParentesis(char c);
 int esCaracterLetra(char c);
 int esCaracterDigito(char c);
-int esNumeroValido(const char* str);
 int esSignoNegativo(const char* expresion, int pos);
+
+// Funciones adicionales
+ListaTokens* nuevaListaTokens();
+void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar);
+int contarTokensClase(const ListaTokens* lista, int clase);
+Token* obtenerTokenPosicion(const ListaTokens* lista, int indice);
 
 #endif
