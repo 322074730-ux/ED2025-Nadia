@@ -5,15 +5,19 @@
 #include <ctype.h>
 #include <math.h>
 
+// Incluimos utils.h para usar las funciones que ya están ahí
+#include "../Include/utils.h"
+
 // Función auxiliar para verificar operador (definida aquí para uso interno)
-static int esCaracterOperadorLocal(char c) {
-    switch (c) {
-        case '+': case '-': case '*': case '/': case '^':
-            return 1;
-        default:
-            return 0;
-    }
-}
+// NOTA: Ya no la necesitamos porque está en utils.h
+// static int esCaracterOperadorLocal(char c) {
+//     switch (c) {
+//         case '+': case '-': case '*': case '/': case '^':
+//             return 1;
+//         default:
+//             return 0;
+//     }
+// }
 
 // Crear nueva lista de tokens
 ListaTokens* nuevaListaTokens() {
@@ -71,10 +75,13 @@ void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar) {
     lista->total++;
 }
 
-// Verificar si es operador
-int esCaracterOperador(char c) {
-    return esCaracterOperadorLocal(c);
-}
+// ============ NOTA: LAS SIGUIENTES FUNCIONES YA NO ESTÁN AQUÍ ============
+// ============ SE MOVIERON A utils.c PARA EVITAR DUPLICACIÓN =============
+
+// Verificar si es operador (YA NO ESTÁ - usamos la de utils.h)
+// int esCaracterOperador(char c) {
+//     return esCaracterOperadorLocal(c);
+// }
 
 // Verificar si es paréntesis
 int esCaracterParentesis(char c) {
@@ -91,30 +98,8 @@ int esCaracterDigito(char c) {
     return c >= '0' && c <= '9';
 }
 
-// Verificar si es un número válido
-int esNumeroValido(const char* str) {
-    if (!str || !*str) return 0;
-    
-    int punto = 0;
-    int digitos = 0;
-    
-    for (int i = 0; str[i]; i++) {
-        if (i == 0 && str[i] == '-') {
-            continue; // Signo negativo permitido al inicio
-        }
-        
-        if (str[i] == '.') {
-            punto++;
-            if (punto > 1) return 0;
-        } else if (!esCaracterDigito(str[i])) {
-            return 0;
-        } else {
-            digitos++;
-        }
-    }
-    
-    return digitos > 0;
-}
+// ============ NOTA: esNumeroValido TAMPOCO ESTÁ AQUÍ ============
+// ============ SE USA LA DE utils.h =============================
 
 // Verificar si es un signo negativo válido
 int esSignoNegativo(const char* expresion, int pos) {
@@ -124,7 +109,7 @@ int esSignoNegativo(const char* expresion, int pos) {
     if (pos == 0) return 1;
     
     // Está después de un operador
-    if (pos > 0 && esCaracterOperadorLocal(expresion[pos-1])) return 1;
+    if (pos > 0 && esCaracterOperador(expresion[pos-1])) return 1;
     
     // Está después de paréntesis izquierdo
     if (pos > 0 && expresion[pos-1] == '(') return 1;
@@ -184,7 +169,7 @@ ListaTokens* analizarExpresion(const char* expresion) {
             i++;
         }
         // Operador
-        else if (esCaracterOperadorLocal(actual)) {
+        else if (esCaracterOperador(actual)) {
             char temp[2] = {actual, '\0'};
             agregarToken(lista, temp, TOKEN_KIND_OPERADOR, i);
             i++;
@@ -403,7 +388,4 @@ Token* obtenerTokenPosicion(const ListaTokens* lista, int indice) {
     return actual;
 }
 
-// Función esNumero para compatibilidad con otros módulos
-int esNumero(char c) {
-    return esCaracterDigito(c) || c == '.';
-}
+// NOTA: La función esNumero NO está aquí, se usa la de utils.h
