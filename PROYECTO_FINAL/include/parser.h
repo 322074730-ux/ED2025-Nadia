@@ -3,14 +3,13 @@
 
 #include <stdbool.h>
 
-// DefiniciÃ³n de tipos de tokens usando constantes
-#define TOKEN_KIND_NUMERO    1   // NÃºmero: 123, 45.67
-#define TOKEN_KIND_OPERADOR  2   // Operador: + - * / ^
-#define TOKEN_KIND_PAR_IZQ   3   // ParÃ©ntesis izquierdo: (
-#define TOKEN_KIND_PAR_DER   4   // ParÃ©ntesis derecho: )
-#define TOKEN_KIND_LETRA     5   // Letra: a, b, c, ...
-#define TOKEN_KIND_BLANCO    6   // Espacio en blanco
-#define TOKEN_KIND_DESCONOCIDO 7 // CarÃ¡cter no reconocido
+#define TOKEN_KIND_NUMERO    1   
+#define TOKEN_KIND_OPERADOR  2  
+#define TOKEN_KIND_PAR_IZQ   3   
+#define TOKEN_KIND_PAR_DER   4   
+#define TOKEN_KIND_LETRA     5   
+#define TOKEN_KIND_BLANCO    6   
+#define TOKEN_KIND_DESCONOCIDO 7 
 
 // Estructura para un token
 typedef struct _Token {
