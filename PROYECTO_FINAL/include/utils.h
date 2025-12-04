@@ -1,7 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-// Prototipos de funciones
 void limpiarBuffer();
 int esNumero(char c);
 int esCaracterOperador(char c);
@@ -15,6 +14,5 @@ int contarOperandos(const char* expresion);
 int contarOperadores(const char* expresion);
 void limpiarPantalla();
 void pausar();
-int esNumeroValido(const char* str);  // Agregado
-
-#endif // UTILS_H
+int esNumeroValido(const char* str);  
+#endif 
