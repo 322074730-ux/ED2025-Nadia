@@ -5,10 +5,10 @@
 #include "../Include/stack.h"
 #include "../Include/utils.h"
 
-// Declaración explícita para evitar warning
+// DeclaraciÃ³n explÃ­cita para evitar warning
 int esCaracterOperador(char c);
 
-// Definición de Stack para este archivo (diferente de la pila de cadenas)
+// DefiniciÃ³n de Stack para este archivo (diferente de la pila de cadenas)
 typedef struct {
     char** items;
     int top;
