@@ -6,8 +6,8 @@
 #include "../Include/parser.h"
 #include "../Include/utils.h"
 
-// Verificar precedencia de operadores - NOMBRE ÚNICO
-int getPrecedenceInfix(char operador) {
+// Verificar precedencia de operadores
+int obtenerPrecedencia(char operador) {
     switch (operador) {
         case '+':
         case '-': return 1;
@@ -18,7 +18,7 @@ int getPrecedenceInfix(char operador) {
     }
 }
 
-// Convertir expresión infija a postfija
+// Convertir expresiÃ³n infija a postfija
 char* convertirInfijaAPostfija(const char* infija) {
     if (!infija || strlen(infija) == 0) {
         return strdup("");
@@ -41,16 +41,16 @@ char* convertirInfijaAPostfija(const char* infija) {
         // Ignorar espacios
         if (actual == ' ') continue;
         
-        // Si es operando (letra o dígito)
+        // Si es operando (letra o dÃ­gito)
         if (isalnum(actual)) {
             resultado[indice++] = actual;
             resultado[indice++] = ' ';
         }
-        // Si es paréntesis izquierdo
+        // Si es parÃ©ntesis izquierdo
         else if (actual == '(') {
             charStackPush(pila, actual);
         }
-        // Si es paréntesis derecho
+        // Si es parÃ©ntesis derecho
         else if (actual == ')') {
             while (!charStackIsEmpty(pila) && charStackPeek(pila) != '(') {
                 resultado[indice++] = charStackPop(pila);
@@ -63,7 +63,7 @@ char* convertirInfijaAPostfija(const char* infija) {
         // Si es operador
         else if (esCaracterOperador(actual)) {
             while (!charStackIsEmpty(pila) && 
-                   getPrecedenceInfix(charStackPeek(pila)) >= getPrecedenceInfix(actual) &&
+                   obtenerPrecedencia(charStackPeek(pila)) >= obtenerPrecedencia(actual) &&
                    actual != '^') { // ^ es asociativo derecho
                 resultado[indice++] = charStackPop(pila);
                 resultado[indice++] = ' ';
