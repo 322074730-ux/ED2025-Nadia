@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../Include/stack.h"
 #include "../Include/dlist.h"
 #include "../Include/parser.h"
@@ -11,6 +12,8 @@
 void mostrarMenu();
 void procesarOpcion(int opcion);
 void mostrarCreditos();
+void mostrarVersion();
+void mostrarAyuda();
 
 // Funciones de conversión (declaraciones)
 char* convertirInfijaAPostfija(const char* infija);
@@ -23,12 +26,149 @@ char* convertirPrefijaAPostfija(const char* prefija);
 // Variables globales
 ListaDoble* historial = NULL;
 
-int main() {
+// ============ FUNCIONES PARA ARGUMENTOS DE LÍNEA DE COMANDOS ============
+
+void mostrarVersion() {
+    printf("=========================================\n");
+    printf("        CALCULADORA DE EXPRESIONES       \n");
+    printf("             Versión 2.0.0               \n");
+    printf("=========================================\n");
+    printf("Compilado: %s %s\n", __DATE__, __TIME__);
+    printf("Desarrollado por: Nadia\n");
+    printf("Materia: Estructuras de Datos\n");
+    printf("=========================================\n");
+}
+
+void mostrarAyuda() {
+    printf("=========================================\n");
+    printf("        CALCULADORA DE EXPRESIONES       \n");
+    printf("             AYUDA DE USO                \n");
+    printf("=========================================\n\n");
+    
+    printf("SINTAXIS:\n");
+    printf("  calc.exe                  - Menú interactivo\n");
+    printf("  calc.exe [OPCION]         - Modo no interactivo\n");
+    printf("  calc.exe EXPRESIÓN TIPO   - Conversión directa\n\n");
+    
+    printf("OPCIONES:\n");
+    printf("  -h, --help                - Muestra esta ayuda\n");
+    printf("  -v, --version             - Muestra información de versión\n");
+    printf("  -c, --creditos            - Muestra los créditos\n");
+    printf("  -s, --stats               - Muestra estadísticas del historial\n");
+    printf("  -l, --list                - Lista el historial de operaciones\n");
+    printf("  -cl, --clear              - Limpia el historial\n\n");
+    
+    printf("MODO DE CONVERSIÓN DIRECTA:\n");
+    printf("  calc.exe \"EXPRESIÓN\" TIPO\n\n");
+    
+    printf("TIPOS DE CONVERSIÓN:\n");
+    printf("  inf-post    - Infija a Postfija\n");
+    printf("  inf-pre     - Infija a Prefija\n");
+    printf("  post-inf    - Postfija a Infija\n");
+    printf("  post-pre    - Postfija a Prefija\n");
+    printf("  pre-inf     - Prefija a Infija\n");
+    printf("  pre-post    - Prefija a Postfija\n\n");
+    
+    printf("EJEMPLOS:\n");
+    printf("  calc.exe \"A+B\" inf-post\n");
+    printf("    Resultado: A B +\n\n");
+    
+    printf("  calc.exe \"A B +\" post-inf\n");
+    printf("    Resultado: (A+B)\n\n");
+    
+    printf("  calc.exe -l\n");
+    printf("    Muestra el historial de conversiones\n\n");
+    
+    printf("  calc.exe -s\n");
+    printf("    Muestra estadísticas del historial\n");
+    printf("=========================================\n");
+}
+
+// Función para procesar conversión directa desde línea de comandos
+void procesarConversionDirecta(const char* expresion, const char* tipo) {
+    char* resultado = NULL;
+    char tipoConversion[50];
+    
+    printf("Expresión: %s\n", expresion);
+    printf("Tipo: %s\n", tipo);
+    printf("Resultado: ");
+    
+    if (strcmp(tipo, "inf-post") == 0) {
+        resultado = convertirInfijaAPostfija(expresion);
+        strcpy(tipoConversion, "INF->POST");
+    } else if (strcmp(tipo, "inf-pre") == 0) {
+        resultado = convertirInfijaAPrefija(expresion);
+        strcpy(tipoConversion, "INF->PRE");
+    } else if (strcmp(tipo, "post-inf") == 0) {
+        resultado = convertirPostfijaAInfija(expresion);
+        strcpy(tipoConversion, "POST->INF");
+    } else if (strcmp(tipo, "post-pre") == 0) {
+        resultado = convertirPostfijaAPrefija(expresion);
+        strcpy(tipoConversion, "POST->PRE");
+    } else if (strcmp(tipo, "pre-inf") == 0) {
+        resultado = convertirPrefijaAInfija(expresion);
+        strcpy(tipoConversion, "PRE->INF");
+    } else if (strcmp(tipo, "pre-post") == 0) {
+        resultado = convertirPrefijaAPostfija(expresion);
+        strcpy(tipoConversion, "PRE->POST");
+    } else {
+        printf("ERROR: Tipo de conversión no válido\n");
+        printf("Tipos válidos: inf-post, inf-pre, post-inf, post-pre, pre-inf, pre-post\n");
+        exit(1);
+    }
+    
+    if (resultado) {
+        printf("%s\n", resultado);
+        // Guardar en historial
+        guardarOperacion(expresion, resultado, tipoConversion);
+        free(resultado);
+    } else {
+        printf("ERROR: No se pudo realizar la conversión\n");
+    }
+}
+
+// ============ FUNCIÓN MAIN MODIFICADA ============
+
+int main(int argc, char* argv[]) {
     int opcion;
     
     // Inicializaciones
     historial = crearListaDoble();
     
+    // Procesar argumentos de línea de comandos
+    if (argc > 1) {
+        // Modo no interactivo
+        if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+            mostrarAyuda();
+            return 0;
+        } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
+            mostrarVersion();
+            return 0;
+        } else if (strcmp(argv[1], "-c") == 0 || strcmp(argv[1], "--creditos") == 0) {
+            mostrarCreditos();
+            return 0;
+        } else if (strcmp(argv[1], "-s") == 0 || strcmp(argv[1], "--stats") == 0) {
+            mostrarEstadisticas();
+            return 0;
+        } else if (strcmp(argv[1], "-l") == 0 || strcmp(argv[1], "--list") == 0) {
+            leerHistorial();
+            return 0;
+        } else if (strcmp(argv[1], "-cl") == 0 || strcmp(argv[1], "--clear") == 0) {
+            limpiarHistorial();
+            printf("Historial limpiado correctamente.\n");
+            return 0;
+        } else if (argc == 3) {
+            // Modo conversión directa: calc.exe "expresión" tipo
+            procesarConversionDirecta(argv[1], argv[2]);
+            return 0;
+        } else {
+            printf("Error: Argumentos no válidos.\n");
+            printf("Use: calc.exe -h para mostrar ayuda\n");
+            return 1;
+        }
+    }
+    
+    // Modo interactivo (sin argumentos)
     do {
         mostrarMenu();
         printf("Seleccione una opcion: ");
@@ -165,8 +305,13 @@ void mostrarCreditos() {
     printf("=========================================\n");
     printf("              CREDITOS                   \n");
     printf("=========================================\n");
-    printf("Desarrollado por: [Tu Nombre]\n");
+    printf("Desarrollado por: Nadia\n");
     printf("Materia: Estructuras de Datos\n");
-    printf("Version: 1.0\n");
+    printf("Version: 2.0.0\n");
+    printf("Características:\n");
+    printf("  • Conversión entre notaciones\n");
+    printf("  • Historial de operaciones\n");
+    printf("  • Modo interactivo y por línea de comandos\n");
+    printf("  • Validación de expresiones\n");
     printf("=========================================\n");
 }
