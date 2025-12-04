@@ -4,10 +4,7 @@
 #include <ctype.h>
 #include "../Include/utils.h"
 
-// Declaración de función externa
-char* convertirInfijaAPostfija(const char* infija);
-
-// Función auxiliar
+// FunciÃ³n auxiliar
 static void invertirCadena(char* str) {
     if (!str) return;
     
@@ -19,7 +16,7 @@ static void invertirCadena(char* str) {
     }
 }
 
-// Función auxiliar
+// FunciÃ³n auxiliar
 static void intercambiarParentesis(char* str) {
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(') str[i] = ')';
@@ -27,18 +24,21 @@ static void intercambiarParentesis(char* str) {
     }
 }
 
+// DeclaraciÃ³n de funciÃ³n externa
+char* convertirInfijaAPostfija(const char* infija);
+
 char* convertirInfijaAPrefija(const char* infija) {
     if (!infija || strlen(infija) == 0) {
         return strdup("");
     }
     
-    // Paso 1: Invertir la expresión
+    // Paso 1: Invertir la expresiÃ³n
     char* invertida = strdup(infija);
     if (!invertida) return strdup("ERROR: Memoria insuficiente");
     
     invertirCadena(invertida);
     
-    // Paso 2: Intercambiar paréntesis
+    // Paso 2: Intercambiar parÃ©ntesis
     intercambiarParentesis(invertida);
     
     // Paso 3: Convertir a postfija
@@ -47,11 +47,6 @@ char* convertirInfijaAPrefija(const char* infija) {
     
     if (!postfija) {
         return strdup("ERROR: Conversion fallida");
-    }
-    
-    // Verificar si es error
-    if (strstr(postfija, "ERROR")) {
-        return postfija;
     }
     
     // Paso 4: Invertir el resultado
