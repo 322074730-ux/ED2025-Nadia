@@ -16,7 +16,8 @@ El diseño modular del proyecto facilita su mantenimiento, escalabilidad y anál
 
 ```bash
 PROYECTO_FINAL/
-├── main/
+│
+├── main/                          # Código fuente principal
 │   ├── main.c
 │   ├── stack.c
 │   ├── utils.c
@@ -30,7 +31,8 @@ PROYECTO_FINAL/
 │   ├── conversion_postfix_prefix.c
 │   ├── conversion_prefix_infix.c
 │   └── conversion_prefix_postfix.c
-├── include/
+│
+├── include/                       # Archivos de encabezado
 │   ├── stack.h
 │   ├── utils.h
 │   ├── parser.h
@@ -43,8 +45,9 @@ PROYECTO_FINAL/
 │   ├── conversion_postfix_prefix.h
 │   ├── conversion_prefix_infix.h
 │   └── conversion_prefix_postfix.h
-└── compile.bat
-```
+│
+└── compile.bat                    # Script de compilación para Windows
+
 El proyecto está organizado en módulos independientes que permiten separar claramente cada funcionalidad, siguiendo buenas prácticas de programación estructurada en C.
 ## Compilación
 ### Método manual (Windows)
