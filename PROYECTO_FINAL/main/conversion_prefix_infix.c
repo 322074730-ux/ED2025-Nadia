@@ -4,17 +4,12 @@
 #include <ctype.h>
 #include "../Include/utils.h"
 
-// DeclaraciÃ³n explÃ­cita para evitar warning
 int esCaracterOperador(char c);
-
-// DefiniciÃ³n de Stack para este archivo
 typedef struct {
     char** items;
     int top;
     int capacity;
 } Stack;
-
-// CAMBIO: Todas las funciones de Stack son static
 static Stack* createStack(int capacity) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
     stack->capacity = capacity;
@@ -55,7 +50,6 @@ char* convertirPrefijaAInfija(const char* prefija) {
     Stack* stack = createStack(len);
     char* resultado = NULL;
     
-    // Procesar de derecha a izquierda
     for (int i = len - 1; i >= 0; i--) {
         if (esNumero(prefija[i]) || isalpha(prefija[i])) {
             char* operando = (char*)malloc(2 * sizeof(char));
@@ -73,7 +67,6 @@ char* convertirPrefijaAInfija(const char* prefija) {
             char* op1 = pop(stack);
             char* op2 = pop(stack);
             
-            // +4 para parentesis, operador y null terminator
             int exp_len = strlen(op1) + strlen(op2) + 4;
             char* expresion = (char*)malloc(exp_len);
             sprintf(expresion, "(%s%c%s)", op1, prefija[i], op2);
