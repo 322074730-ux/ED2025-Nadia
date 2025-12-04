@@ -130,15 +130,6 @@ Este proyecto forma parte del curso de Estructuras de Datos y busca demostrar:
 
 ---
 
-## Mejoras Futuras
-
-* Implementación de un evaluador de expresiones en las tres notaciones
-* Integración de una interfaz gráfica básica
-* Ampliación del sistema de estadísticas
-* Soporte para archivos de configuración o formatos estructurados
-
----
-
 ## Autora
 
 Nadia Olvera García
@@ -146,12 +137,5 @@ Proyecto desarrollado durante el curso ED2025
 
 ---
 
-Si deseas, puedo crear también:
 
-* Una versión en inglés
-* Un logo para tu repositorio
-* Badges profesionales (versión, lenguaje, licencia, etc.)
-* Un archivo LICENSE
-
-¿Quieres agregar algo más al README?
 
