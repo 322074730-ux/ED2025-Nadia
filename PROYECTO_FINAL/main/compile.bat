@@ -8,7 +8,7 @@ gcc -Iinclude main\main.c main\stack.c main\utils.c main\parser.c main\list.c ma
 REM Verificar si la compilación fue exitosa
 if %ERRORLEVEL% EQU 0 (
     echo.
-    echo ✅ Compilación exitosa!
+    echo  Compilación exitosa!
     echo.
     echo USO:
     echo   calc.exe                    - Menú interactivo
@@ -17,6 +17,6 @@ if %ERRORLEVEL% EQU 0 (
     echo.
 ) else (
     echo.
-    echo ❌ Error en la compilación
+    echo  Error en la compilación
     pause
 )
