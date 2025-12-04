@@ -8,14 +8,12 @@
 #include "../Include/utils.h"
 #include "../Include/file_manager.h"
 
-// Declaraciones de funciones (SOLO DECLARACIONES)
 void mostrarMenu();
 void procesarOpcion(int opcion);
 void mostrarCreditos();
 void mostrarVersion();
 void mostrarAyuda();
 
-// Funciones de conversión (declaraciones)
 char* convertirInfijaAPostfija(const char* infija);
 char* convertirInfijaAPrefija(const char* infija);
 char* convertirPostfijaAInfija(const char* postfija);
@@ -23,7 +21,7 @@ char* convertirPostfijaAPrefija(const char* postfija);
 char* convertirPrefijaAInfija(const char* prefija);
 char* convertirPrefijaAPostfija(const char* prefija);
 
-// Variables globales
+
 ListaDoble* historial = NULL;
 
 // ============ FUNCIONES PARA ARGUMENTOS DE LÍNEA DE COMANDOS ============
