@@ -1,25 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include "../Include/stack.h"
 #include "../Include/dlist.h"
 #include "../Include/parser.h"
 #include "../Include/utils.h"
 #include "../Include/file_manager.h"
-#include "../Include/conversion_infix_postfix.h"
-#include "../Include/conversion_infix_prefix.h"
-#include "../Include/conversion_postfix_infix.h"
-#include "../Include/conversion_postfix_prefix.h"
-#include "../Include/conversion_prefix_infix.h"
-#include "../Include/conversion_prefix_postfix.h"
 
-// Declaraciones de funciones
+// Declaraciones de funciones (SOLO DECLARACIONES)
 void mostrarMenu();
 void procesarOpcion(int opcion);
 void mostrarCreditos();
-void evaluarExpresion();
-void analizarExpresionTokens();
+
+// Funciones de conversiÃ³n (declaraciones)
+char* convertirInfijaAPostfija(const char* infija);
+char* convertirInfijaAPrefija(const char* infija);
+char* convertirPostfijaAInfija(const char* postfija);
+char* convertirPostfijaAPrefija(const char* postfija);
+char* convertirPrefijaAInfija(const char* prefija);
+char* convertirPrefijaAPostfija(const char* prefija);
 
 // Variables globales
 ListaDoble* historial = NULL;
@@ -30,31 +29,23 @@ int main() {
     // Inicializaciones
     historial = crearListaDoble();
     
-    // Mostrar encabezado
-    limpiarPantalla();
-    printf("===========================================================\n");
-    printf("         CALCULADORA DE EXPRESIONES MATEMATICAS\n");
-    printf("          Con historial en archivo de texto\n");
-    printf("===========================================================\n");
-    
     do {
         mostrarMenu();
-        printf("\nSeleccione una opcion (0-12): ");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &opcion);
+        limpiarBuffer();
         
-        // Leer opción de manera segura
-        char input[10];
-        if (fgets(input, sizeof(input), stdin) != NULL) {
-            if (sscanf(input, "%d", &opcion) != 1) {
-                printf("Entrada no valida. Intente de nuevo.\n");
-                pausar();
-                limpiarPantalla();
-                continue;
-            }
-        } else {
-            opcion = 0; // Salir si hay error de entrada
+        if (opcion >= 1 && opcion <= 8) {
+            procesarOpcion(opcion);
+        } else if (opcion == 9) {
+            mostrarEstadisticas();
+        } else if (opcion == 10) {
+            limpiarHistorial();
+        } else if (opcion == 11) {
+            mostrarCreditos();
+        } else if (opcion != 0) {
+            printf("Opcion no valida. Intente de nuevo.\n");
         }
-        
-        procesarOpcion(opcion);
         
         if (opcion != 0) {
             pausar();
@@ -67,223 +58,103 @@ int main() {
         destruirListaDoble(historial);
     }
     
-    printf("\n===========================================================\n");
-    printf("  Historial guardado en: historial_calculadora.txt\n");
-    printf("  ¡Gracias por usar la calculadora! Hasta pronto.\n");
-    printf("===========================================================\n");
-    
+    printf("Gracias por usar la calculadora. Â¡Hasta pronto!\n");
     return 0;
 }
 
 void mostrarMenu() {
-    printf("\n===========================================================\n");
-    printf("                     MENU PRINCIPAL\n");
-    printf("===========================================================\n");
-    printf(" 1. Infija -> Postfija\n");
-    printf(" 2. Infija -> Prefija\n");
-    printf(" 3. Postfija -> Infija\n");
-    printf(" 4. Postfija -> Prefija\n");
-    printf(" 5. Prefija -> Infija\n");
-    printf(" 6. Prefija -> Postfija\n");
-    printf(" 7. Evaluar expresion\n");
-    printf(" 8. Analizar expresion (Tokens)\n");
-    printf(" 9. Mostrar historial desde archivo\n");
-    printf("10. Mostrar estadisticas\n");
-    printf("11. Limpiar historial\n");
-    printf("12. Creditos\n");
-    printf(" 0. Salir\n");
-    printf("===========================================================\n");
+    printf("=========================================\n");
+    printf("        CALCULADORA DE EXPRESIONES       \n");
+    printf("=========================================\n");
+    printf("1. Infija a Postfija\n");
+    printf("2. Infija a Prefija\n");
+    printf("3. Postfija a Infija\n");
+    printf("4. Postfija a Prefija\n");
+    printf("5. Prefija a Infija\n");
+    printf("6. Prefija a Postfija\n");
+    printf("7. Evaluar expresion\n");
+    printf("8. Mostrar historial\n");
+    printf("9. Mostrar estadisticas\n");
+    printf("10. Limpiar historial\n");
+    printf("11. Creditos\n");
+    printf("0. Salir\n");
+    printf("=========================================\n");
 }
 
 void procesarOpcion(int opcion) {
-    char expresion[256];
-    char* resultado = NULL;
-    const char* tipoOperacion = "";
+    char expresion[100];
+    char* resultado;
     
     switch (opcion) {
         case 1:
-            printf("\n===========================================================\n");
-            printf("               CONVERSION INFIJA -> POSTFIJA\n");
-            printf("===========================================================\n");
-            printf("Ejemplos: a+b*c, (a+b)*c, a+b-c*d\n\n");
             printf("Ingrese expresion infija: ");
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirInfijaAPostfija(expresion);
-            printf("\nResultado postfija: %s\n", resultado);
-            tipoOperacion = "INFIJAPOSTFIJA";
+            printf("Resultado postfija: %s\n", resultado);
+            if (resultado) free(resultado);
             break;
-            
         case 2:
-            printf("\n===========================================================\n");
-            printf("               CONVERSION INFIJA -> PREFIJA\n");
-            printf("===========================================================\n");
-            printf("Ejemplos: a+b*c, (a+b)*c, a+b-c*d\n\n");
             printf("Ingrese expresion infija: ");
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirInfijaAPrefija(expresion);
-            printf("\nResultado prefija: %s\n", resultado);
-            tipoOperacion = "INFIJAPREFIJA";
+            printf("Resultado prefija: %s\n", resultado);
+            if (resultado) free(resultado);
             break;
-            
         case 3:
-            printf("\n===========================================================\n");
-            printf("               CONVERSION POSTFIJA -> INFIJA\n");
-            printf("===========================================================\n");
-            printf("Ejemplos: abc*+, ab+c*, abc*+de+*\n\n");
             printf("Ingrese expresion postfija: ");
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPostfijaAInfija(expresion);
-            printf("\nResultado infija: %s\n", resultado);
-            tipoOperacion = "POSTFIJAINFIJA";
+            printf("Resultado infija: %s\n", resultado);
+            if (resultado) free(resultado);
             break;
-            
         case 4:
-            printf("\n===========================================================\n");
-            printf("               CONVERSION POSTFIJA -> PREFIJA\n");
-            printf("===========================================================\n");
-            printf("Ejemplos: abc*+, ab+c*, abc*+de+*\n\n");
             printf("Ingrese expresion postfija: ");
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPostfijaAPrefija(expresion);
-            printf("\nResultado prefija: %s\n", resultado);
-            tipoOperacion = "POSTFIJAPREFIJA";
+            printf("Resultado prefija: %s\n", resultado);
+            if (resultado) free(resultado);
             break;
-            
         case 5:
-            printf("\n===========================================================\n");
-            printf("               CONVERSION PREFIJA -> INFIJA\n");
-            printf("===========================================================\n");
-            printf("Ejemplos: +a*bc, *+abc, +-a*bc/de\n\n");
             printf("Ingrese expresion prefija: ");
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPrefijaAInfija(expresion);
-            printf("\nResultado infija: %s\n", resultado);
-            tipoOperacion = "PREFIJAINFIJA";
+            printf("Resultado infija: %s\n", resultado);
+            if (resultado) free(resultado);
             break;
-            
         case 6:
-            printf("\n===========================================================\n");
-            printf("               CONVERSION PREFIJA -> POSTFIJA\n");
-            printf("===========================================================\n");
-            printf("Ejemplos: +a*bc, *+abc, +-a*bc/de\n\n");
             printf("Ingrese expresion prefija: ");
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPrefijaAPostfija(expresion);
-            printf("\nResultado postfija: %s\n", resultado);
-            tipoOperacion = "PREFIJAPOSTFIJA";
+            printf("Resultado postfija: %s\n", resultado);
+            if (resultado) free(resultado);
             break;
-            
         case 7:
-            evaluarExpresion();
+            printf("Funcionalidad de evaluacion no implementada aun.\n");
             break;
-            
         case 8:
-            analizarExpresionTokens();
-            break;
-            
-        case 9:
             leerHistorial();
             break;
-            
-        case 10:
+        case 9:
             mostrarEstadisticas();
             break;
-            
-        case 11:
-            printf("\n===========================================================\n");
-            printf("                 LIMPIAR HISTORIAL\n");
-            printf("===========================================================\n");
-            printf("¿Esta seguro de limpiar todo el historial? (s/n): ");
-            char confirmacion;
-            scanf("%c", &confirmacion);
-            limpiarBuffer();
-            if (confirmacion == 's' || confirmacion == 'S') {
-                limpiarHistorial();
-                printf("OK - Historial limpiado correctamente.\n");
-            } else {
-                printf("X - Operacion cancelada.\n");
-            }
+        case 10:
+            limpiarHistorial();
             break;
-            
-        case 12:
+        case 11:
             mostrarCreditos();
             break;
-            
-        case 0:
-            printf("\nSaliendo del programa...\n");
-            break;
-            
         default:
-            printf("\nERROR - Opcion no valida. Intente de nuevo.\n");
-            return;
-    }
-    
-    // GUARDAR EN ARCHIVO DE TEXTO si la operación fue exitosa
-    if (resultado != NULL && strlen(resultado) > 0) {
-        // Verificar que no sea un mensaje de error
-        if (strstr(resultado, "ERROR") == NULL) {
-            guardarOperacion(expresion, resultado, tipoOperacion);
-        }
-        free(resultado);
-    }
-}
-
-void evaluarExpresion() {
-    printf("\n===========================================================\n");
-    printf("                 EVALUACION DE EXPRESION\n");
-    printf("===========================================================\n");
-    printf("Nota: Ingrese expresion con valores numericos\n");
-    printf("Ejemplos: 2+3*4, (5+3)*2, 10/2+3\n\n");
-    
-    char expresion[256];
-    printf("Ingrese expresion a evaluar: ");
-    leerCadena(expresion, sizeof(expresion), NULL);
-    
-    // Por ahora solo guardamos la expresión para evaluación futura
-    guardarResultadoEvaluacion(expresion, 0.0);
-    printf("\nOK - Expresion guardada para evaluacion futura.\n");
-    printf("  (La funcionalidad de evaluacion se implementara proximamente)\n");
-}
-
-void analizarExpresionTokens() {
-    printf("\n===========================================================\n");
-    printf("                ANALISIS LEXICO DE EXPRESION\n");
-    printf("===========================================================\n");
-    printf("Ejemplos: 2+3*4, a+b*c, (x+y)*z\n\n");
-    
-    char expresion[256];
-    printf("Ingrese expresion: ");
-    leerCadena(expresion, sizeof(expresion), NULL);
-    
-    ListaTokens* tokens = analizarExpresion(expresion);
-    if (tokens) {
-        mostrarTokens(tokens);
-        
-        // Validar los tokens
-        if (verificarTokens(tokens)) {
-            printf("\nOK - Expresion valida\n");
-        } else {
-            printf("\nERROR - Expresion contiene errores\n");
-        }
-        
-        liberarListaTokens(tokens);
+            printf("Opcion no implementada.\n");
+            break;
     }
 }
 
 void mostrarCreditos() {
-    printf("\n===========================================================\n");
-    printf("                       CREDITOS\n");
-    printf("===========================================================\n");
-    printf("  Proyecto: Calculadora de Expresiones\n");
-    printf("  Desarrollado por: Nadia\n");
-    printf("  Materia: Estructuras de Datos\n");
-    printf("  Version: 2.0 (con historial en archivo)\n");
-    printf("\n  Caracteristicas principales:\n");
-    printf("  • 6 tipos de conversiones de notacion\n");
-    printf("  • Historial automatico en archivo de texto\n");
-    printf("  • Analisis lexico de expresiones\n");
-    printf("  • Validacion de sintaxis\n");
-    printf("  • Estadisticas de uso\n");
-    printf("\n  Archivo de historial: historial_calculadora.txt\n");
-    printf("===========================================================\n");
+    printf("=========================================\n");
+    printf("              CREDITOS                   \n");
+    printf("=========================================\n");
+    printf("Desarrollado por: [Tu Nombre]\n");
+    printf("Materia: Estructuras de Datos\n");
+    printf("Version: 1.0\n");
+    printf("=========================================\n");
 }
