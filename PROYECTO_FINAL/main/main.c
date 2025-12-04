@@ -12,7 +12,7 @@ void mostrarMenu();
 void procesarOpcion(int opcion);
 void mostrarCreditos();
 
-// Funciones de conversiÃ³n (declaraciones)
+// Funciones de conversión (declaraciones)
 char* convertirInfijaAPostfija(const char* infija);
 char* convertirInfijaAPrefija(const char* infija);
 char* convertirPostfijaAInfija(const char* postfija);
@@ -58,7 +58,7 @@ int main() {
         destruirListaDoble(historial);
     }
     
-    printf("Gracias por usar la calculadora. Â¡Hasta pronto!\n");
+    printf("Gracias por usar la calculadora. ¡Hasta pronto!\n");
     return 0;
 }
 
@@ -91,6 +91,8 @@ void procesarOpcion(int opcion) {
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirInfijaAPostfija(expresion);
             printf("Resultado postfija: %s\n", resultado);
+            // GUARDAR EN HISTORIAL
+            guardarOperacion(expresion, resultado, "INF->POST");
             if (resultado) free(resultado);
             break;
         case 2:
@@ -98,6 +100,8 @@ void procesarOpcion(int opcion) {
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirInfijaAPrefija(expresion);
             printf("Resultado prefija: %s\n", resultado);
+            // GUARDAR EN HISTORIAL
+            guardarOperacion(expresion, resultado, "INF->PRE");
             if (resultado) free(resultado);
             break;
         case 3:
@@ -105,6 +109,8 @@ void procesarOpcion(int opcion) {
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPostfijaAInfija(expresion);
             printf("Resultado infija: %s\n", resultado);
+            // GUARDAR EN HISTORIAL
+            guardarOperacion(expresion, resultado, "POST->INF");
             if (resultado) free(resultado);
             break;
         case 4:
@@ -112,6 +118,8 @@ void procesarOpcion(int opcion) {
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPostfijaAPrefija(expresion);
             printf("Resultado prefija: %s\n", resultado);
+            // GUARDAR EN HISTORIAL
+            guardarOperacion(expresion, resultado, "POST->PRE");
             if (resultado) free(resultado);
             break;
         case 5:
@@ -119,6 +127,8 @@ void procesarOpcion(int opcion) {
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPrefijaAInfija(expresion);
             printf("Resultado infija: %s\n", resultado);
+            // GUARDAR EN HISTORIAL
+            guardarOperacion(expresion, resultado, "PRE->INF");
             if (resultado) free(resultado);
             break;
         case 6:
@@ -126,6 +136,8 @@ void procesarOpcion(int opcion) {
             leerCadena(expresion, sizeof(expresion), NULL);
             resultado = convertirPrefijaAPostfija(expresion);
             printf("Resultado postfija: %s\n", resultado);
+            // GUARDAR EN HISTORIAL
+            guardarOperacion(expresion, resultado, "PRE->POST");
             if (resultado) free(resultado);
             break;
         case 7:
