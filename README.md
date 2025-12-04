@@ -49,6 +49,20 @@ PROYECTO_FINAL/
 └── compile.bat                    # Script de compilación para Windows
 
 
+
+El proyecto está organizado en módulos independientes que permiten separar claramente cada funcionalidad, siguiendo buenas prácticas de programación estructurada en C.
+
+---
+
+## Compilación
+
+### Método manual (Windows)
+
+1. Abrir la terminal y ubicarse en el directorio del proyecto:
+
+```bash
+cd "C:\Users\nadia\OneDrive\Escritorio\ED2025-Nadia-main (14)\ED2025-Nadia-main\PROYECTO_FINAL"
+
 El proyecto está organizado en módulos independientes que permiten separar claramente cada funcionalidad, siguiendo buenas prácticas de programación estructurada en C.
 
 ## Compilación
