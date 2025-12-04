@@ -14,7 +14,8 @@ typedef struct {
     int capacity;
 } Stack;
 
-Stack* createStack(int capacity) {
+// CAMBIO: Todas las funciones de Stack son static
+static Stack* createStack(int capacity) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
     stack->capacity = capacity;
     stack->top = -1;
@@ -22,7 +23,7 @@ Stack* createStack(int capacity) {
     return stack;
 }
 
-void destroyStack(Stack* stack) {
+static void destroyStack(Stack* stack) {
     if (stack) {
         for (int i = 0; i <= stack->top; i++) {
             free(stack->items[i]);
@@ -32,17 +33,17 @@ void destroyStack(Stack* stack) {
     }
 }
 
-int isEmpty(Stack* stack) {
+static int isEmpty(Stack* stack) {
     return stack->top == -1;
 }
 
-void push(Stack* stack, char* item) {
+static void push(Stack* stack, char* item) {
     if (stack->top < stack->capacity - 1) {
         stack->items[++stack->top] = strdup(item);
     }
 }
 
-char* pop(Stack* stack) {
+static char* pop(Stack* stack) {
     if (!isEmpty(stack)) {
         return stack->items[stack->top--];
     }
