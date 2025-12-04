@@ -6,8 +6,8 @@
 #include "../Include/parser.h"
 #include "../Include/utils.h"
 
-// Verificar precedencia de operadores - NOMBRE CAMBIADO
-int getPrecedence(char operador) {
+// Verificar precedencia de operadores - NOMBRE ÚNICO
+int getPrecedenceInfix(char operador) {
     switch (operador) {
         case '+':
         case '-': return 1;
@@ -63,7 +63,7 @@ char* convertirInfijaAPostfija(const char* infija) {
         // Si es operador
         else if (esCaracterOperador(actual)) {
             while (!charStackIsEmpty(pila) && 
-                   getPrecedence(charStackPeek(pila)) >= getPrecedence(actual) &&
+                   getPrecedenceInfix(charStackPeek(pila)) >= getPrecedenceInfix(actual) &&
                    actual != '^') { // ^ es asociativo derecho
                 resultado[indice++] = charStackPop(pila);
                 resultado[indice++] = ' ';
