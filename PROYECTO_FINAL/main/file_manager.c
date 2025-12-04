@@ -29,7 +29,7 @@ void guardarOperacion(const char* expresion, const char* resultado, const char* 
     fprintf(archivo, "%s: %s -> %s\n", tipo, expresion, resultado);
     fclose(archivo);
     
-    printf("Operación guardada en el historial\n");
+    printf("✓ Operación guardada en el historial\n");
 }
 
 // Leer historial completo
@@ -40,9 +40,9 @@ void leerHistorial() {
         return;
     }
     
-    printf("\n═══════════════════════════════════════\n");
-    printf("           HISTORIAL DE OPERACIONES\n");
-    printf("═══════════════════════════════════════\n\n");
+    printf("\n═══════════════════════════════════════════════════════════\n");
+    printf("                  HISTORIAL DE OPERACIONES\n");
+    printf("═══════════════════════════════════════════════════════════\n\n");
     
     char linea[256];
     int contador = 1;
@@ -52,10 +52,10 @@ void leerHistorial() {
     }
     
     if (contador == 1) {
-        printf("Historial vacío\n");
+        printf("               Historial vacío\n");
     }
     
-    printf("═══════════════════════════════════════\n");
+    printf("═══════════════════════════════════════════════════════════\n");
     fclose(archivo);
 }
 
@@ -90,6 +90,8 @@ void guardarResultadoEvaluacion(const char* expresion, double resultado) {
     
     fprintf(archivo, "EVALUACIÓN: %s = %.4f\n", expresion, resultado);
     fclose(archivo);
+    
+    printf("✓ Evaluación guardada en el historial\n");
 }
 
 // Mostrar estadísticas del historial
@@ -103,21 +105,37 @@ void mostrarEstadisticas() {
     int totalOperaciones = 0;
     int conversiones = 0;
     int evaluaciones = 0;
+    int infijaPostfija = 0, infijaPrefija = 0, postfijaInfija = 0;
+    int postfijaPrefija = 0, prefijaInfija = 0, prefijaPostfija = 0;
     char linea[256];
     
     while (fgets(linea, sizeof(linea), archivo)) {
         totalOperaciones++;
-        if (strstr(linea, "CONVERSIÓN")) conversiones++;
-        if (strstr(linea, "EVALUACIÓN")) evaluaciones++;
+        
+        if (strstr(linea, "INFIJA→POSTFIJA")) infijaPostfija++;
+        else if (strstr(linea, "INFIJA→PREFIJA")) infijaPrefija++;
+        else if (strstr(linea, "POSTFIJA→INFIJA")) postfijaInfija++;
+        else if (strstr(linea, "POSTFIJA→PREFIJA")) postfijaPrefija++;
+        else if (strstr(linea, "PREFIJA→INFIJA")) prefijaInfija++;
+        else if (strstr(linea, "PREFIJA→POSTFIJA")) prefijaPostfija++;
+        else if (strstr(linea, "EVALUACIÓN")) evaluaciones++;
+        
+        if (strstr(linea, "→")) conversiones++;
     }
     
     fclose(archivo);
     
-    printf("\n═══════════════════════════════════════\n");
-    printf("            ESTADÍSTICAS\n");
-    printf("═══════════════════════════════════════\n");
+    printf("\n═══════════════════════════════════════════════════════════\n");
+    printf("                     ESTADÍSTICAS\n");
+    printf("═══════════════════════════════════════════════════════════\n");
     printf("Total de operaciones: %d\n", totalOperaciones);
-    printf("Conversiones: %d\n", conversiones);
-    printf("Evaluaciones: %d\n", evaluaciones);
-    printf("═══════════════════════════════════════\n");
+    printf("\n--- CONVERSIONES (%d) ---\n", conversiones);
+    printf("  Infija → Postfija:    %d\n", infijaPostfija);
+    printf("  Infija → Prefija:     %d\n", infijaPrefija);
+    printf("  Postfija → Infija:    %d\n", postfijaInfija);
+    printf("  Postfija → Prefija:   %d\n", postfijaPrefija);
+    printf("  Prefija → Infija:     %d\n", prefijaInfija);
+    printf("  Prefija → Postfija:   %d\n", prefijaPostfija);
+    printf("\n--- EVALUACIONES (%d) ---\n", evaluaciones);
+    printf("═══════════════════════════════════════════════════════════\n");
 }
