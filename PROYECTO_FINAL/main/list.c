@@ -3,6 +3,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Nuestra propia implementación de strdup
+static char* mi_strdup(const char* str) {
+    if (!str) return NULL;
+    
+    size_t len = strlen(str) + 1;
+    char* copy = (char*)malloc(len * sizeof(char));
+    
+    if (copy) {
+        strcpy(copy, str);
+    }
+    
+    return copy;
+}
+
 // Crear nueva lista simple
 ListaSimple* crearListaSimple() {
     ListaSimple* lista = (ListaSimple*)malloc(sizeof(ListaSimple));
@@ -19,7 +33,8 @@ static NodoSimple* crearNodoSimple(const char* valor) {
     NodoSimple* nodo = (NodoSimple*)malloc(sizeof(NodoSimple));
     if (!nodo) return NULL;
     
-    nodo->valor = strdup(valor);
+    // USAMOS NUESTRA PROPIA FUNCIÓN mi_strdup
+    nodo->valor = mi_strdup(valor);
     if (!nodo->valor) {
         free(nodo);
         return NULL;
