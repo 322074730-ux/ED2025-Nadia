@@ -3,14 +3,14 @@
 
 #include <stdbool.h>
 
-// Definición de tipos de tokens usando constantes
-#define TOKEN_KIND_NUMERO    1   // Número: 123, 45.67
+// DefiniciÃ³n de tipos de tokens usando constantes
+#define TOKEN_KIND_NUMERO    1   // NÃºmero: 123, 45.67
 #define TOKEN_KIND_OPERADOR  2   // Operador: + - * / ^
-#define TOKEN_KIND_PAR_IZQ   3   // Paréntesis izquierdo: (
-#define TOKEN_KIND_PAR_DER   4   // Paréntesis derecho: )
+#define TOKEN_KIND_PAR_IZQ   3   // ParÃ©ntesis izquierdo: (
+#define TOKEN_KIND_PAR_DER   4   // ParÃ©ntesis derecho: )
 #define TOKEN_KIND_LETRA     5   // Letra: a, b, c, ...
 #define TOKEN_KIND_BLANCO    6   // Espacio en blanco
-#define TOKEN_KIND_DESCONOCIDO 7 // Carácter no reconocido
+#define TOKEN_KIND_DESCONOCIDO 7 // CarÃ¡cter no reconocido
 
 // Estructura para un token
 typedef struct _Token {
@@ -35,16 +35,12 @@ void mostrarTokens(const ListaTokens* lista);
 int verificarTokens(const ListaTokens* lista);
 const char* nombreClaseToken(int clase);
 
-// Funciones auxiliares (NO duplicar las de utils.h)
+// Funciones de ayuda
+int esCaracterOperador(char c);
 int esCaracterParentesis(char c);
 int esCaracterLetra(char c);
 int esCaracterDigito(char c);
+int esNumeroValido(const char* str);
 int esSignoNegativo(const char* expresion, int pos);
-
-// Funciones adicionales
-ListaTokens* nuevaListaTokens();
-void agregarToken(ListaTokens* lista, const char* texto, int clase, int lugar);
-int contarTokensClase(const ListaTokens* lista, int clase);
-Token* obtenerTokenPosicion(const ListaTokens* lista, int indice);
 
 #endif
