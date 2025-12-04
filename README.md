@@ -1,14 +1,8 @@
-Perfecto, aquí tienes tu README **mejorado, limpio, profesional y sin emojis**, ideal para GitHub.
-Mantiene un formato elegante, bien organizado y completo.
 
----
-
-```markdown
 # ED2025 – Convertidor de Expresiones Algebraicas  
 ### Proyecto Final – Estructuras de Datos  
 Autora: Nadia
 
----
 
 ## Descripción General
 
@@ -17,12 +11,10 @@ Incluye además manejo de estructuras de datos fundamentales, lectura y procesam
 
 El diseño modular del proyecto facilita su mantenimiento, escalabilidad y análisis académico.
 
----
 
 ## Estructura del Proyecto
 
-```
-
+```bash
 PROYECTO_FINAL/
 ├── main/
 │   ├── main.c
@@ -52,22 +44,13 @@ PROYECTO_FINAL/
 │   ├── conversion_prefix_infix.h
 │   └── conversion_prefix_postfix.h
 └── compile.bat
-
-````
-
+```
 El proyecto está organizado en módulos independientes que permiten separar claramente cada funcionalidad, siguiendo buenas prácticas de programación estructurada en C.
-
----
-
 ## Compilación
-
 ### Método manual (Windows)
-
 1. Abrir la terminal y ubicarse en el directorio del proyecto:
 
-```bash
 cd "C:\Users\nadia\OneDrive\Escritorio\ED2025-Nadia-main (14)\ED2025-Nadia-main\PROYECTO_FINAL"
-````
 
 2. Compilar el proyecto usando GCC:
 
