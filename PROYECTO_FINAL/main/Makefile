@@ -1,42 +1,93 @@
+# Makefile para calculadora de expresiones
+# Compilador
 CC = gcc
-CFLAGS = -Wall -Wextra -I./Include
-TARGET = calculadora
-SRC_DIR = Main
-OBJ_DIR = Obj
+# Opciones de compilación
+CFLAGS = -I./include -Wall -Wextra
+# Nombre del ejecutable
+TARGET = calc.exe
 
-# Lista de archivos fuente
-SRCS = $(SRC_DIR)/main.c \
-       $(SRC_DIR)/conversion_infix_prefix.c \
-       $(SRC_DIR)/conversion_infix_postfix.c \
-       $(SRC_DIR)/conversion_prefix_infix.c \
-       $(SRC_DIR)/conversion_prefix_postfix.c \
-       $(SRC_DIR)/conversion_postfix_infix.c \
-       $(SRC_DIR)/conversion_postfix_prefix.c \
-       $(SRC_DIR)/parser.c \
-       $(SRC_DIR)/stack.c \
-       $(SRC_DIR)/utils.c \
-       $(SRC_DIR)/dlist.c \
-       $(SRC_DIR)/list.c \
-       $(SRC_DIR)/file_manager.c
+# Archivos fuente
+SRC_DIR = main
+SRC_FILES = $(SRC_DIR)/main.c \
+            $(SRC_DIR)/stack.c \
+            $(SRC_DIR)/utils.c \
+            $(SRC_DIR)/parser.c \
+            $(SRC_DIR)/list.c \
+            $(SRC_DIR)/dlist.c \
+            $(SRC_DIR)/file_manager.c \
+            $(SRC_DIR)/conversion_infix_postfix.c \
+            $(SRC_DIR)/conversion_infix_prefix.c \
+            $(SRC_DIR)/conversion_postfix_infix.c \
+            $(SRC_DIR)/conversion_postfix_prefix.c \
+            $(SRC_DIR)/conversion_prefix_infix.c \
+            $(SRC_DIR)/conversion_prefix_postfix.c
 
 # Archivos objeto
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+OBJ_FILES = $(SRC_FILES:.c=.o)
 
-all: $(OBJ_DIR) $(TARGET)
+# Regla por defecto
+all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+# Enlace para crear el ejecutable
+$(TARGET): $(OBJ_FILES)
+	$(CC) $(CFLAGS) -o $@ $^ -lm
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+# Regla para compilar archivos .c a .o
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
+# Limpiar archivos compilados
 clean:
-	rm -rf $(OBJ_DIR) $(TARGET)
+	del /Q $(SRC_DIR)\*.o $(TARGET) 2>nul || rm -f $(SRC_DIR)/*.o $(TARGET)
 
+# Ejecutar el programa en modo interactivo
 run: $(TARGET)
 	./$(TARGET)
 
-.PHONY: all clean run
+# Mostrar ayuda
+help: $(TARGET)
+	./$(TARGET) -h
+
+# Mostrar versión
+version: $(TARGET)
+	./$(TARGET) -v
+
+# Mostrar historial
+list: $(TARGET)
+	./$(TARGET) -l
+
+# Mostrar estadísticas
+stats: $(TARGET)
+	./$(TARGET) -s
+
+# Limpiar historial
+clear-hist: $(TARGET)
+	./$(TARGET) -cl
+
+# Ejemplo de conversión directa
+example1: $(TARGET)
+	./$(TARGET) "A+B" inf-post
+
+example2: $(TARGET)
+	./$(TARGET) "A B +" post-inf
+
+example3: $(TARGET)
+	./$(TARGET) "+ A B" pre-inf
+
+# Ayuda del Makefile
+make-help:
+	@echo "Opciones disponibles:"
+	@echo "  make all        - Compilar el proyecto"
+	@echo "  make clean      - Limpiar archivos compilados"
+	@echo "  make run        - Ejecutar modo interactivo"
+	@echo "  make help       - Mostrar ayuda del programa"
+	@echo "  make version    - Mostrar versión"
+	@echo "  make list       - Mostrar historial"
+	@echo "  make stats      - Mostrar estadísticas"
+	@echo "  make clear-hist - Limpiar historial"
+	@echo "  make example1   - Ejemplo: Infija a Postfija"
+	@echo "  make example2   - Ejemplo: Postfija a Infija"
+	@echo "  make example3   - Ejemplo: Prefija a Infija"
+	@echo "  make make-help  - Mostrar esta ayuda"
+
+.PHONY: all clean run help version list stats clear-hist example1 example2 example3 make-help
