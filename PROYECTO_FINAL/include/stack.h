@@ -2,27 +2,23 @@
 #define STACK_H
 
 #include <stdbool.h>
-#include <stdlib.h>  // Agregado para malloc/free
+#include <stdlib.h> 
 
-// Nodo para pila de caracteres
 typedef struct CharNode {
     char data;
     struct CharNode* next;
 } CharNode;
 
-// Nodo para pila de nÃºmeros
 typedef struct DoubleNode {
     double data;
     struct DoubleNode* next;
 } DoubleNode;
 
-// Nodo para pila de cadenas
 typedef struct StringNode {
     char* data;
     struct StringNode* next;
 } StringNode;
 
-// Estructuras principales de pilas
 typedef struct {
     CharNode* top;
     int size;
@@ -38,7 +34,6 @@ typedef struct {
     int size;
 } StringStack;
 
-// Pila de caracteres
 CharStack* createCharStack();
 void destroyCharStack(CharStack* s);
 bool charStackIsEmpty(CharStack* s);
@@ -48,7 +43,6 @@ char charStackPeek(CharStack* s);
 int charStackSize(CharStack* s);
 void charStackDisplay(CharStack* s);
 
-// Pila de nÃºmeros
 DoubleStack* createDoubleStack();
 void destroyDoubleStack(DoubleStack* s);
 bool doubleStackIsEmpty(DoubleStack* s);
@@ -58,7 +52,6 @@ double doubleStackPeek(DoubleStack* s);
 int doubleStackSize(DoubleStack* s);
 void doubleStackDisplay(DoubleStack* s);
 
-// Pila de cadenas
 StringStack* createStringStack();
 void destroyStringStack(StringStack* s);
 bool stringStackIsEmpty(StringStack* s);
