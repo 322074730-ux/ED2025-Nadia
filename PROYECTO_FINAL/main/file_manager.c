@@ -166,13 +166,13 @@ void mostrarEstadisticas() {
     printf("\n--- ARCHIVO ---\n");
     printf("  Nombre:               historial_calculadora.txt\n");
     
-    // Verificar tamaño del archivo
+    // Verificar tamaño del archivo (SIN Ñ)
     archivo = fopen(ARCHIVO_HISTORIAL, "r");
     if (archivo) {
         fseek(archivo, 0, SEEK_END);
-        long tamaño = ftell(archivo);
+        long tamano = ftell(archivo);  // <--- CAMBIÉ "tamaño" por "tamano"
         fclose(archivo);
-        printf("  Tamaño:               %ld bytes\n", tamaño);
+        printf("  Tamano:               %ld bytes\n", tamano);  // <--- SIN Ñ
     }
     
     printf("===========================================================\n");
